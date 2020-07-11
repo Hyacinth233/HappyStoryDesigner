@@ -1,5 +1,7 @@
 extends Node
 
+class_name Happy_Story_Teller
+
 export(Resource) var director = Happy_Director.new()
 var storys : Dictionary
 var index : int

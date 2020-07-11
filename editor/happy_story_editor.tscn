@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_story_editor.gd" type="Script" id=1]
+
+[node name="happy_story_editor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="graph_editor" type="GraphEdit" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="director_name" type="Label" parent="graph_editor"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -766.088
+margin_bottom = 14.0
+align = 2
+
+[node name="node_size" type="Label" parent="graph_editor"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -766.088
+margin_top = 16.4816
+margin_bottom = 30.4816
+text = "Story Node Size : 0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="warning_label_0" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Please select a HappyStoryTeller node"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="warning_label_1" type="Label" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.8909
+margin_bottom = -0.890869
+text = "Please add a HappyDirector resource to this node"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="create_menu" type="PopupMenu" parent="."]
+margin_left = 288.0
+margin_top = 176.0
+margin_right = 447.0
+margin_bottom = 210.0
+items = [ "Create Dialogue Node", null, 0, false, false, 0, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="popup_request" from="graph_editor" to="." method="_on_graph_editor_popup_request"]
+[connection signal="id_pressed" from="create_menu" to="." method="_on_create_menu_id_pressed"]
