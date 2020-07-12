@@ -1,11 +1,13 @@
 tool
 extends Control
+class_name Happy_Story_Editor
 
 var the_plugin
 var cur_teller
-var cur_director : Resource
+var cur_director : Happy_Director
 var director_name : String
 var node_size = 0
+var node_ids : Array
 var editor_selection:EditorSelection
 
 onready var graph_edit = $graph_editor
@@ -14,6 +16,8 @@ onready var node_size_label = $graph_editor/node_size
 onready var warning_label_0 = $warning_label_0
 onready var warning_label_1 = $warning_label_1
 onready var create_menu = $create_menu
+
+const happy_dialogue_node = preload("../happy_dialogue_node.tscn")
 
 var has_ready = false
 
@@ -69,8 +73,33 @@ func load_nodes_from_director(director):
 	pass
 
 func create_dialogue_node():
-	print("添加对话节点")
+	var node = happy_dialogue_node.instance()
+	graph_edit.add_child(node)
+	node.offset = create_menu.get_global_rect().position - graph_edit.get_global_rect().position + graph_edit.scroll_offset
+	add_story_into_director(node)
+	refresh_inspector()
+	
+func add_story_into_director(node):
+	node.editor = self
+	node.director = cur_director
 
+	var id = create_new_id()
+	if not node.node_data:
+		node.node_data = Happy_Dialogue.new()
+	cur_director.storys[id] = node.node_data
+	cur_director.storys[id].id = id
+	print(cur_director.storys[id].id)
+	cur_director.coordinate[id] = node.offset
+	node.refresh_node()
+	
+func create_new_id() -> int:
+	var new_id = 0
+	for id in node_ids:
+		if new_id == id:
+			new_id += 1
+	node_ids.append(new_id)
+	return new_id
+	
 #----- signer -----
 
 func _on_editor_selection_changed():

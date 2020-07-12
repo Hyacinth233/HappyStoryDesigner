@@ -1,20 +1,25 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/happy_story_designer/font/SIMHEI.tres" type="DynamicFont" id=1]
 [ext_resource path="res://addons/happy_story_designer/font/SIMHEI_12.tres" type="DynamicFont" id=2]
 [ext_resource path="res://addons/happy_story_designer/theme/defualt_theme.tres" type="Theme" id=3]
+[ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_dialogue_node.gd" type="Script" id=4]
+
+[sub_resource type="Theme" id=1]
+GraphNode/colors/title_color = Color( 0.513726, 0.847059, 0.454902, 1 )
 
 [node name="happy_dialogue_node" type="GraphNode"]
 margin_right = 32.0
 margin_bottom = 30.0
+theme = SubResource( 1 )
 custom_fonts/title_font = ExtResource( 1 )
 title = "对话"
 slot/0/left_enabled = true
 slot/0/left_type = 0
-slot/0/left_color = Color( 0.360784, 0.356863, 0.854902, 1 )
+slot/0/left_color = Color( 0.513726, 0.847059, 0.454902, 1 )
 slot/0/right_enabled = true
 slot/0/right_type = 0
-slot/0/right_color = Color( 0.85098, 0.258824, 0.258824, 1 )
+slot/0/right_color = Color( 0.513726, 0.847059, 0.454902, 1 )
 slot/1/left_enabled = false
 slot/1/left_type = 0
 slot/1/left_color = Color( 1, 1, 1, 1 )
@@ -33,39 +38,16 @@ slot/3/left_color = Color( 1, 1, 1, 1 )
 slot/3/right_enabled = false
 slot/3/right_type = 0
 slot/3/right_color = Color( 1, 1, 1, 1 )
-slot/4/left_enabled = false
-slot/4/left_type = 0
-slot/4/left_color = Color( 1, 1, 1, 1 )
-slot/4/right_enabled = false
-slot/4/right_type = 0
-slot/4/right_color = Color( 1, 1, 1, 1 )
-__meta__ = {
-"_edit_lock_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Control" type="Control" parent="."]
-margin_left = 16.0
-margin_top = 24.0
-margin_right = 209.0
-margin_bottom = 24.0
-
-[node name="ColorRect" type="ColorRect" parent="Control"]
-anchor_bottom = 1.0
-margin_left = -14.0
-margin_top = -20.5
-margin_right = 206.0
-margin_bottom = 147.5
-color = Color( 0.654902, 1, 0.309804, 0.243137 )
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer_0" type="HBoxContainer" parent="."]
 margin_left = 16.0
-margin_top = 25.0
+margin_top = 24.0
 margin_right = 209.0
-margin_bottom = 49.0
+margin_bottom = 48.0
 
 [node name="id_name" type="Label" parent="HBoxContainer_0"]
 margin_top = 5.0
@@ -87,9 +69,9 @@ editable = false
 
 [node name="HBoxContainer_1" type="HBoxContainer" parent="."]
 margin_left = 16.0
-margin_top = 50.0
+margin_top = 49.0
 margin_right = 209.0
-margin_bottom = 73.0
+margin_bottom = 72.0
 
 [node name="name_name" type="Label" parent="HBoxContainer_1"]
 margin_top = 5.0
@@ -116,11 +98,10 @@ text = "颜色"
 
 [node name="color" type="ColorPickerButton" parent="HBoxContainer_1"]
 margin_left = 142.0
-margin_right = 171.0
+margin_right = 165.0
 margin_bottom = 23.0
-rect_min_size = Vector2( 29, 0 )
+rect_min_size = Vector2( 23, 0 )
 custom_fonts/font = ExtResource( 2 )
-flat = true
 edit_alpha = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -128,9 +109,9 @@ __meta__ = {
 
 [node name="HBoxContainer_2" type="HBoxContainer" parent="."]
 margin_left = 16.0
-margin_top = 74.0
+margin_top = 73.0
 margin_right = 209.0
-margin_bottom = 98.0
+margin_bottom = 97.0
 
 [node name="scale_name" type="Label" parent="HBoxContainer_2"]
 margin_top = 5.0
@@ -170,8 +151,13 @@ selected = 1
 
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_left = 16.0
-margin_top = 99.0
+margin_top = 98.0
 margin_right = 209.0
-margin_bottom = 169.0
+margin_bottom = 168.0
 rect_min_size = Vector2( 0, 70 )
 custom_fonts/font = ExtResource( 2 )
+[connection signal="text_changed" from="HBoxContainer_1/name" to="." method="_on_name_text_changed"]
+[connection signal="color_changed" from="HBoxContainer_1/color" to="." method="_on_color_color_changed"]
+[connection signal="value_changed" from="HBoxContainer_2/scale" to="." method="_on_scale_value_changed"]
+[connection signal="item_selected" from="HBoxContainer_2/voice" to="." method="_on_voice_item_selected"]
+[connection signal="text_changed" from="TextEdit" to="." method="_on_TextEdit_text_changed"]
