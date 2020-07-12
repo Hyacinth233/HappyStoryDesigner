@@ -30,6 +30,8 @@ func _ready():
 	
 	
 func clear_nodes():
+	node_ids.clear()
+	node_size = 0
 	graph_edit.clear_connections()
 	for child in graph_edit.get_children():
 		if child is GraphNode:
@@ -88,7 +90,7 @@ func add_story_into_director(node):
 		node.node_data = Happy_Dialogue.new()
 	cur_director.storys[id] = node.node_data
 	cur_director.storys[id].id = id
-	print(cur_director.storys[id].id)
+	#print(cur_director.storys[id].id)
 	cur_director.coordinate[id] = node.offset
 	node.refresh_node()
 	
@@ -100,6 +102,11 @@ func create_new_id() -> int:
 	node_ids.append(new_id)
 	return new_id
 	
+func save_director():
+	print(cur_director.storys)
+	print(cur_director.coordinate)
+	var path = cur_director.resource_path
+	ResourceSaver.save(path, cur_director)
 #----- signer -----
 
 func _on_editor_selection_changed():
@@ -118,6 +125,7 @@ func _on_editor_selection_changed():
 		set_current_teller(null)
 		
 	director_name_label.text = director_name
+	node_size = node_ids.size()
 	node_size_label.text = "Story Node Size : " + String(node_size)
 
 
