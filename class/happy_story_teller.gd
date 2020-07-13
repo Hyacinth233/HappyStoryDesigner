@@ -1,15 +1,26 @@
+tool
 extends Node
 
 class_name Happy_Story_Teller
 
 export(Resource) var director = Happy_Director.new()
+var last_director = Happy_Director.new()
 var storys : Dictionary
+var editor
 var index : int
+var root = 0
 
 func _ready():
 	storys = director.storys
-	index = 0
+	index = root
 	
+func _process(delta):
+	if Engine.editor_hint:
+		if last_director != director:
+			if editor:
+				editor.set_current_teller(self)
+				last_director = director
+		
 func next() -> String:
 	var _name = storys[index].name
 	var _text = storys[index].text

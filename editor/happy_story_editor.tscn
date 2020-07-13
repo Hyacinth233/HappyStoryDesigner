@@ -69,5 +69,7 @@ items = [ "Create Dialogue Node", null, 0, false, false, 0, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="connection_request" from="graph_editor" to="." method="_on_graph_editor_connection_request"]
 [connection signal="popup_request" from="graph_editor" to="." method="_on_graph_editor_popup_request"]
+[connection signal="scroll_offset_changed" from="graph_editor" to="." method="_on_graph_editor_scroll_offset_changed"]
 [connection signal="id_pressed" from="create_menu" to="." method="_on_create_menu_id_pressed"]

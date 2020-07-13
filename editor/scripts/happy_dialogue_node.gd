@@ -4,6 +4,7 @@ extends GraphNode
 var editor
 var director : Happy_Director
 var node_data : Happy_Dialogue
+var node_coordinate : Vector2
 var id
 
 func _ready():
@@ -21,6 +22,7 @@ func refresh_node():
 
 func save_node():
 	editor.cur_director.storys[id] = node_data
+	editor.cur_director.coordinate[id] = node_coordinate
 	editor.save_director()
 
 func _on_name_text_changed(new_text):
@@ -57,3 +59,7 @@ func _on_TextEdit_text_changed():
 		save_node()
 	if editor:
 		editor.refresh_inspector()
+
+func _on_happy_dialogue_node_offset_changed():
+	node_coordinate = offset
+	save_node()

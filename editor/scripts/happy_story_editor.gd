@@ -5,6 +5,7 @@ class_name Happy_Story_Editor
 var the_plugin
 var cur_teller : Happy_Story_Teller
 var cur_director : Happy_Director
+var editor_offset : Vector2
 var director_name : String
 var node_size = 0
 var node_ids : Array
@@ -53,14 +54,16 @@ func set_current_teller(teller):
 			cur_director = cur_teller.director
 			
 			director_name = cur_director.resource_path.get_basename()
-
+			teller.editor = self
+			load_nodes_from_director(cur_director)
+			
 		else:
 			#print("木有director")
 			graph_edit.visible = false
 			warning_label_0.visible = false
 			warning_label_1.visible = true
+			teller.editor = self
 		
-		load_nodes_from_director(cur_director)
 	else:
 		#print("这玩儿就不是Teller")
 		cur_teller = null
@@ -76,9 +79,28 @@ func refresh_inspector():
 	node_size = node_ids.size()
 	node_size_label.text = "Story Node Size : " + String(node_size)	
 	
-func load_nodes_from_director(director):
-	pass
-
+func load_nodes_from_director(director : Happy_Director):
+	var graph_node_dictionary : Dictionary
+	for key in director.storys:
+		var node = happy_dialogue_node.instance()
+		node.editor = self
+		node.director = cur_director
+		node.node_data = cur_director.storys[key]
+		node.refresh_node()
+		node_ids.append(key)
+		node_size = node_ids.size()
+		graph_edit.add_child(node)
+		node.offset = director.coordinate[key]
+		graph_node_dictionary[key] = node
+	refresh_inspector()
+	
+	for key in graph_node_dictionary:
+		var next_key = graph_node_dictionary[key].node_data.next_id
+		if next_key != -1:
+			graph_edit.connect_node(graph_node_dictionary[key].name, 0, graph_node_dictionary[next_key].name, 0)
+			print(String(key) + "~" + String(next_key))
+	
+	
 func create_dialogue_node():
 	var node = happy_dialogue_node.instance()
 	graph_edit.add_child(node)
@@ -110,6 +132,7 @@ func create_new_id() -> int:
 	
 func save_director():
 	var path = cur_director.resource_path
+	cur_director.editor_offset = editor_offset
 	ResourceSaver.save(path, cur_director)
 	
 #----- signer -----
@@ -139,3 +162,25 @@ func _on_create_menu_id_pressed(id):
 	match id:
 		0:
 			create_dialogue_node()
+
+
+func _on_graph_editor_scroll_offset_changed(ofs):
+	editor_offset = ofs
+	save_director()
+
+
+func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
+	var from_node = graph_edit.get_node(from)
+	var to_node = graph_edit.get_node(to)
+	
+	var nodes : Dictionary
+	for child in graph_edit.get_children():
+		if child is GraphNode:
+			nodes[child.id] = child
+	
+	if from_node.node_data.next_id != -1:
+		var src_to_node = nodes[from_node.node_data.next_id]
+		graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
+	from_node.node_data.next_id = to_node.id
+	graph_edit.connect_node(from, from_slot, to, to_slot)
+	
