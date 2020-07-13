@@ -156,6 +156,7 @@ margin_right = 209.0
 margin_bottom = 168.0
 rect_min_size = Vector2( 0, 70 )
 custom_fonts/font = ExtResource( 2 )
+wrap_enabled = true
 [connection signal="text_changed" from="HBoxContainer_1/name" to="." method="_on_name_text_changed"]
 [connection signal="color_changed" from="HBoxContainer_1/color" to="." method="_on_color_color_changed"]
 [connection signal="value_changed" from="HBoxContainer_2/scale" to="." method="_on_scale_value_changed"]

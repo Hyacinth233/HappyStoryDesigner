@@ -3,7 +3,7 @@ extends Control
 class_name Happy_Story_Editor
 
 var the_plugin
-var cur_teller
+var cur_teller : Happy_Story_Teller
 var cur_director : Happy_Director
 var director_name : String
 var node_size = 0
@@ -30,7 +30,7 @@ func _ready():
 	
 	
 func clear_nodes():
-	node_ids.clear()
+	node_ids = []
 	node_size = 0
 	graph_edit.clear_connections()
 	for child in graph_edit.get_children():
@@ -39,6 +39,8 @@ func clear_nodes():
 			child.queue_free()
 			
 func set_current_teller(teller):
+	cur_teller = Happy_Story_Teller.new()
+	cur_director = Happy_Director.new()
 	clear_nodes()
 	if teller:
 		if teller.director:
@@ -70,6 +72,9 @@ func set_current_teller(teller):
 func refresh_inspector():
 	var editor_interface:EditorInterface = the_plugin.get_editor_interface()
 	editor_interface.get_inspector().refresh()
+	director_name_label.text = director_name
+	node_size = node_ids.size()
+	node_size_label.text = "Story Node Size : " + String(node_size)	
 	
 func load_nodes_from_director(director):
 	pass
@@ -93,6 +98,7 @@ func add_story_into_director(node):
 	#print(cur_director.storys[id].id)
 	cur_director.coordinate[id] = node.offset
 	node.refresh_node()
+	save_director()
 	
 func create_new_id() -> int:
 	var new_id = 0
@@ -103,10 +109,9 @@ func create_new_id() -> int:
 	return new_id
 	
 func save_director():
-	print(cur_director.storys)
-	print(cur_director.coordinate)
 	var path = cur_director.resource_path
 	ResourceSaver.save(path, cur_director)
+	
 #----- signer -----
 
 func _on_editor_selection_changed():
@@ -124,10 +129,6 @@ func _on_editor_selection_changed():
 		#print("大哥你没选东西啊！")
 		set_current_teller(null)
 		
-	director_name_label.text = director_name
-	node_size = node_ids.size()
-	node_size_label.text = "Story Node Size : " + String(node_size)
-
 
 func _on_graph_editor_popup_request(position):
 	create_menu.set_global_position(position)
