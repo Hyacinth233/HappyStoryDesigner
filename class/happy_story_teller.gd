@@ -8,7 +8,7 @@ var last_director = Happy_Director.new()
 var storys : Dictionary
 var editor
 var index : int
-var root = 0
+export var root = 0
 
 func _ready():
 	storys = director.storys

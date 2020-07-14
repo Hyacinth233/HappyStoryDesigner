@@ -157,6 +157,8 @@ margin_bottom = 168.0
 rect_min_size = Vector2( 0, 70 )
 custom_fonts/font = ExtResource( 2 )
 wrap_enabled = true
+[connection signal="mouse_entered" from="." to="." method="_on_happy_dialogue_node_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_happy_dialogue_node_mouse_exited"]
 [connection signal="offset_changed" from="." to="." method="_on_happy_dialogue_node_offset_changed"]
 [connection signal="text_changed" from="HBoxContainer_1/name" to="." method="_on_name_text_changed"]
 [connection signal="color_changed" from="HBoxContainer_1/color" to="." method="_on_color_color_changed"]

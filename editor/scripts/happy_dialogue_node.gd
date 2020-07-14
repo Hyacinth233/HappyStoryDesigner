@@ -5,7 +5,7 @@ var editor
 var director : Happy_Director
 var node_data : Happy_Dialogue
 var node_coordinate : Vector2
-var id
+var id : int
 
 func _ready():
 	refresh_node()
@@ -63,3 +63,11 @@ func _on_TextEdit_text_changed():
 func _on_happy_dialogue_node_offset_changed():
 	node_coordinate = offset
 	save_node()
+
+func _on_happy_dialogue_node_mouse_entered():
+	editor.mouse_enter_node = self
+
+
+func _on_happy_dialogue_node_mouse_exited():
+	if editor.mouse_enter_node == self:
+		editor.mouse_enter_node = null

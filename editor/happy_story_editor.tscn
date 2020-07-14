@@ -14,6 +14,7 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+right_disconnects = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -69,7 +70,19 @@ items = [ "Create Dialogue Node", null, 0, false, false, 0, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="node_menu" type="PopupMenu" parent="."]
+margin_left = 288.0
+margin_top = 176.0
+margin_right = 447.0
+margin_bottom = 210.0
+items = [ "Set Root", null, 0, false, false, 0, 0, null, "", false, "Copy", null, 0, false, false, 3, 0, null, "", false, "Cut", null, 0, false, false, 3, 0, null, "", false, "Paste Value", null, 0, false, true, 3, 0, null, "", false, "Paste Type", null, 0, false, true, 4, 0, null, "", false, "Delete", null, 0, false, false, 5, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="connection_request" from="graph_editor" to="." method="_on_graph_editor_connection_request"]
+[connection signal="disconnection_request" from="graph_editor" to="." method="_on_graph_editor_disconnection_request"]
 [connection signal="popup_request" from="graph_editor" to="." method="_on_graph_editor_popup_request"]
 [connection signal="scroll_offset_changed" from="graph_editor" to="." method="_on_graph_editor_scroll_offset_changed"]
 [connection signal="id_pressed" from="create_menu" to="." method="_on_create_menu_id_pressed"]
+[connection signal="id_pressed" from="node_menu" to="." method="_on_node_menu_id_pressed"]
