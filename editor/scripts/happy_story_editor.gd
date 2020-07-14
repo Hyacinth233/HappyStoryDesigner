@@ -131,9 +131,10 @@ func create_new_id() -> int:
 	return new_id
 	
 func save_director():
-	var path = cur_director.resource_path
-	cur_director.editor_offset = editor_offset
-	ResourceSaver.save(path, cur_director)
+	if cur_director:
+		var path = cur_director.resource_path
+		cur_director.editor_offset = editor_offset
+		ResourceSaver.save(path, cur_director)
 	
 #----- signer -----
 
