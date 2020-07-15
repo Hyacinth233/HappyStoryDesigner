@@ -9,6 +9,7 @@ var storys : Dictionary
 var editor
 var index : int
 export var root = 0
+var last_root = -1
 
 func _ready():
 	storys = director.storys
@@ -20,6 +21,13 @@ func _process(delta):
 			if editor:
 				editor.set_current_teller(self)
 				last_director = director
+		if last_root != root:
+			if editor:
+				if root == -1:
+					editor.node_root_label.text = "Root Not Found!!"
+				else:
+					editor.node_root_label.text = "Root : " + String(root)
+					last_root = root
 		
 func next() -> String:
 	var _name = storys[index].name

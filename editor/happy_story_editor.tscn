@@ -11,10 +11,10 @@ __meta__ = {
 }
 
 [node name="graph_editor" type="GraphEdit" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 right_disconnects = true
+scroll_offset = Vector2( -208, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -25,6 +25,9 @@ anchor_right = 1.0
 margin_left = -766.088
 margin_bottom = 14.0
 align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="node_size" type="Label" parent="graph_editor"]
 anchor_left = 1.0
@@ -33,6 +36,18 @@ margin_left = -766.088
 margin_top = 16.4816
 margin_bottom = 30.4816
 text = "Story Node Size : 0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="node_root" type="Label" parent="graph_editor"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -766.088
+margin_top = 32.7924
+margin_bottom = 46.7924
+text = "Root : 0"
 align = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -76,12 +91,15 @@ margin_left = 288.0
 margin_top = 176.0
 margin_right = 447.0
 margin_bottom = 210.0
-items = [ "Set Root", null, 0, false, false, 0, 0, null, "", false, "Copy", null, 0, false, false, 3, 0, null, "", false, "Cut", null, 0, false, false, 3, 0, null, "", false, "Paste Value", null, 0, false, true, 3, 0, null, "", false, "Paste Type", null, 0, false, true, 4, 0, null, "", false, "Delete", null, 0, false, false, 5, 0, null, "", false ]
+items = [ "Set Root", null, 0, false, false, 0, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="connection_request" from="graph_editor" to="." method="_on_graph_editor_connection_request"]
+[connection signal="copy_nodes_request" from="graph_editor" to="." method="_on_graph_editor_copy_nodes_request"]
+[connection signal="delete_nodes_request" from="graph_editor" to="." method="_on_graph_editor_delete_nodes_request"]
 [connection signal="disconnection_request" from="graph_editor" to="." method="_on_graph_editor_disconnection_request"]
+[connection signal="paste_nodes_request" from="graph_editor" to="." method="_on_graph_editor_paste_nodes_request"]
 [connection signal="popup_request" from="graph_editor" to="." method="_on_graph_editor_popup_request"]
 [connection signal="scroll_offset_changed" from="graph_editor" to="." method="_on_graph_editor_scroll_offset_changed"]
 [connection signal="id_pressed" from="create_menu" to="." method="_on_create_menu_id_pressed"]

@@ -13,9 +13,14 @@ var editor_selection : EditorSelection
 var mouse_enter_node : GraphNode = null
 var popup_node : GraphNode
 
+var copied_datas = [Happy_Story]
+var selected_nodes = [GraphNode]
+var selected_position = Vector2.ZERO
+
 onready var graph_edit = $graph_editor
 onready var director_name_label = $graph_editor/director_name
 onready var node_size_label = $graph_editor/node_size
+onready var node_root_label = $graph_editor/node_root
 onready var warning_label_0 = $warning_label_0
 onready var warning_label_1 = $warning_label_1
 onready var create_menu = $create_menu
@@ -31,6 +36,9 @@ func _ready():
 		var editor_interface:EditorInterface = the_plugin.get_editor_interface()
 		editor_selection = editor_interface.get_selection()
 		editor_selection.connect("selection_changed", self, "_on_editor_selection_changed")
+		
+func scale_editor(var scale : float):
+	graph_edit.zoom += scale
 	
 func clear_nodes():
 	node_ids = []
@@ -101,11 +109,10 @@ func load_nodes_from_director(director : Happy_Director):
 		if next_key != -1:
 			if graph_node_dictionary[next_key]:
 				graph_edit.connect_node(graph_node_dictionary[key].name, 0, graph_node_dictionary[next_key].name, 0)
-				print(String(key) + "~" + String(next_key))
+				#print(String(key) + "~" + String(next_key))
 			else:
 				next_key = -1
-	
-	
+
 func create_dialogue_node():
 	var node = happy_dialogue_node.instance()
 	add_story_into_director(node)
@@ -128,6 +135,7 @@ func add_story_into_director(node):
 	
 func create_new_id() -> int:
 	var new_id = 0
+	node_ids.sort()
 	for id in node_ids:
 		if new_id == id:
 			new_id += 1
@@ -138,10 +146,43 @@ func set_root_node(var node : GraphNode):
 	cur_teller.root = node.id
 	refresh_inspector()
 
+func copy_nodes(var nodes : Array):
+	for node in nodes:
+		var story : Happy_Story
+		story = node.node_data
+		copied_datas.append(story)
+		#print("复制池："+String(copied_datas))
+
+func paste_nodes(var datas : Array):
+	for data in datas:
+		var node = happy_dialogue_node.instance()
+		node.editor = self
+		node.director = cur_director
+		var id = data.id
+		if node_ids.has(id):
+			id = create_new_id()
+		if not node.node_data:
+			node.node_data = Happy_Dialogue.new()
+		node.node_data = data.clone()
+		cur_director.storys[id] = node.node_data
+		cur_director.storys[id].id = id
+		#cur_director.coordinate[id] = node.offset
+		#node.node_data.next_id = -1
+		#node.node_data.last_nodes = []
+		#print(node.node_data.id)
+		node.refresh_node()
+		save_director()
+		graph_edit.add_child(node)
+		var position = selected_position + Vector2(40,10)
+		selected_position = position
+		node.offset = position #- graph_edit.get_global_rect().position + graph_edit.scroll_offset
+		#print(node.offset)
+		refresh_inspector()
+
 func delete_node(var node : GraphNode):
 	if cur_teller.root == node.id:
 		cur_teller.root = -1
-		print("Root Not Found")
+		#print("Root Not Found")
 	node_ids.erase(node.id)
 	node_size = node_ids.size()
 	cur_director.storys.erase(node.id)
@@ -208,11 +249,12 @@ func _on_node_menu_id_pressed(id):
 	match id:
 		0:
 			set_root_node(popup_node)
-		5:
-			delete_node(popup_node)
 			
 func _on_graph_editor_delete_nodes_request():
-	delete_node(popup_node)
+	for node in selected_nodes:
+		if node is GraphNode:
+			delete_node(node)
+			#print(selected_nodes)
 
 func _on_graph_editor_scroll_offset_changed(ofs):
 	editor_offset = ofs
@@ -242,3 +284,14 @@ func _on_graph_editor_disconnection_request(from, from_slot, to, to_slot):
 	to_node.node_data.last_nodes.erase(from_node.id)
 	save_director()
 	graph_edit.disconnect_node(from, from_slot, to, to_slot)
+
+func _on_graph_editor_copy_nodes_request():
+	copied_datas.clear()
+	for node in selected_nodes:
+		if node is GraphNode:
+			copied_datas.append(node.node_data)
+			#print(copied_datas)
+
+func _on_graph_editor_paste_nodes_request():
+	paste_nodes(copied_datas)
+

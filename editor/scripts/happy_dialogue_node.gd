@@ -9,12 +9,22 @@ var id : int
 
 func _ready():
 	refresh_node()
+
+func _process(delta):
+	if selected:
+		if not editor.selected_nodes.has(self):
+			editor.selected_nodes.append(self)
+			editor.selected_position = offset
+		#	print(editor.selected_nodes)
+	else:
+		if editor.selected_nodes.has(self):
+			editor.selected_nodes.erase(self)
 		
 func refresh_node():
 	if node_data:
 		id = node_data.id
 		$HBoxContainer_0/id.text = String(node_data.id)
-		$HBoxContainer_1/name.text = node_data.name
+		$HBoxContainer_1/name.text = node_data.speaker
 		$HBoxContainer_1/color.color = node_data.color
 		$HBoxContainer_2/scale.value = node_data.speed_scale
 		$HBoxContainer_2/voice.select(node_data.voice)
@@ -27,7 +37,7 @@ func save_node():
 
 func _on_name_text_changed(new_text):
 	if node_data:
-		node_data.name = new_text
+		node_data.speaker = new_text
 		save_node()
 	if editor:
 		editor.refresh_inspector()
