@@ -29,14 +29,28 @@ func _process(delta):
 					editor.node_root_label.text = "Root : " + String(root)
 					last_root = root
 		
-func next() -> String:
-	var _name = storys[index].name
-	var _text = storys[index].text
-	var _output = "id:" + String(index) + "  " + _name + ":" + "_text"
-	
-	index = storys[index].next_id
-	return _output
-	
+func next(var values : Array = [-1]) -> String:
+	match storys[index].type:
+		Happy_Story.TYPE.DIALOGUE:			
+			return run_dialogue()
+		Happy_Story.TYPE.BRANCH:
+			return run_branch(values[0])
+	return "EROOR: Unknown Type"
+
 func next_with_index(var _index : int) -> String:
 	index = _index
 	return next()
+	
+func run_dialogue() -> String:
+	var speaker = storys[index].speaker
+	var text = storys[index].text
+	var output = "id:" + String(index) + "  " + speaker + ":" + text
+	index = storys[index].to_id
+	return output
+	
+func run_branch(var value) -> String:
+	var selected = storys[index].selection[value]
+	storys[index].to_id = storys[index].branch[value]
+	var output = "id:" + String(index) + "  " + selected + ":" + String(storys[index].to_id)
+	index = storys[index].to_id
+	return output

@@ -8,7 +8,7 @@ export(Color) var color = Color(0,0,0,1)
 export(int) var voice = 0
 export(int) var speed_scale = 1
 
-func clone() -> Happy_Story:
+func clone() -> Happy_Dialogue:
 	var new = get_script().new()
 	new.next_id = -1
 	new.last_nodes = []
