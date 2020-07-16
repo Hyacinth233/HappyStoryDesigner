@@ -11,6 +11,8 @@ func _ready():
 	refresh_node()
 
 func _process(delta):
+	if not editor:
+		return
 	if selected:
 		if not editor.selected_nodes.has(self):
 			editor.selected_nodes.append(self)

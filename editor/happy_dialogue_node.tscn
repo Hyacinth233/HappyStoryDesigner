@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/happy_story_designer/font/SIMHEI.tres" type="DynamicFont" id=1]
 [ext_resource path="res://addons/happy_story_designer/font/SIMHEI_12.tres" type="DynamicFont" id=2]
-[ext_resource path="res://addons/happy_story_designer/theme/defualt_theme.tres" type="Theme" id=3]
+[ext_resource path="res://addons/happy_story_designer/theme/default_theme.tres" type="Theme" id=3]
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_dialogue_node.gd" type="Script" id=4]
 
 [sub_resource type="Theme" id=1]

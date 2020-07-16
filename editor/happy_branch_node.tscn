@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/happy_story_designer/font/SIMHEI.tres" type="DynamicFont" id=1]
+[ext_resource path="res://addons/happy_story_designer/font/SIMHEI_12.tres" type="DynamicFont" id=2]
+[ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_branch_node.gd" type="Script" id=4]
+
+[sub_resource type="Theme" id=1]
+GraphNode/colors/title_color = Color( 1, 0.796078, 0.25098, 1 )
+
+[node name="happy_dialogue_node" type="GraphNode"]
+margin_right = 216.0
+margin_bottom = 80.0
+theme = SubResource( 1 )
+custom_fonts/title_font = ExtResource( 1 )
+title = "分支"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color( 0.972549, 0.74902, 0.152941, 1 )
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color( 0.72549, 0.964706, 0.772549, 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+slot_color = Color( 0.968627, 0.917647, 0.486275, 1 )
+
+[node name="HBoxContainer_0" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 200.0
+margin_bottom = 48.0
+
+[node name="id_name" type="Label" parent="HBoxContainer_0"]
+margin_top = 5.0
+margin_right = 12.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 2 )
+text = "ID"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="id" type="LineEdit" parent="HBoxContainer_0"]
+margin_left = 16.0
+margin_right = 74.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 49.292, 14 )
+text = "000"
+editable = false
+
+[node name="new_branch_btn" type="Button" parent="HBoxContainer_0"]
+margin_left = 78.0
+margin_right = 166.0
+margin_bottom = 24.0
+text = "New Branch"
+[connection signal="pressed" from="HBoxContainer_0/new_branch_btn" to="." method="_on_new_branch_btn_pressed"]

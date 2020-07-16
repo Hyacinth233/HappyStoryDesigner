@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/happy_story_designer/font/SIMHEI_12.tres" type="DynamicFont" id=1]
+[ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_branch_prototype.gd" type="Script" id=2]
+
+[node name="branch" type="HBoxContainer"]
+margin_right = 198.0
+margin_bottom = 23.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="delete_btn" type="Button" parent="."]
+margin_right = 34.0
+margin_bottom = 23.0
+text = "Del"
+align = 0
+
+[node name="index" type="Label" parent="."]
+margin_left = 38.0
+margin_top = 5.0
+margin_right = 44.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
+[node name="selection" type="LineEdit" parent="."]
+margin_left = 48.0
+margin_right = 198.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 150, 23 )
+custom_fonts/font = ExtResource( 1 )
+text = "我带你们打"
+[connection signal="pressed" from="delete_btn" to="." method="_on_delete_btn_pressed"]
