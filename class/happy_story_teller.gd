@@ -7,7 +7,7 @@ export(Resource) var director = Happy_Director.new()
 var last_director = Happy_Director.new()
 var storys : Dictionary
 var editor
-var index : int
+var index
 export var root = 0
 var last_root = -1
 
@@ -28,29 +28,35 @@ func _process(delta):
 				else:
 					editor.node_root_label.text = "Root : " + String(root)
 					last_root = root
-		
-func next(var values : Array = [-1]) -> String:
+
+func play() -> String:
 	match storys[index].type:
 		Happy_Story.TYPE.DIALOGUE:			
 			return run_dialogue()
 		Happy_Story.TYPE.BRANCH:
-			return run_branch(values[0])
+			return run_branch()
 	return "EROOR: Unknown Type"
-
-func next_with_index(var _index : int) -> String:
+	
+func play_with_index(var _index : int) -> String:
 	index = _index
-	return next()
+	return play()
+	
+func next(var values : Array = [-1]):
+	match storys[index].type:
+		Happy_Story.TYPE.DIALOGUE:			
+			index = storys[index].to_id
+		Happy_Story.TYPE.BRANCH:
+			index = index[values[0]]
+	return "EROOR: Unknown Type"
 	
 func run_dialogue() -> String:
 	var speaker = storys[index].speaker
 	var text = storys[index].text
 	var output = "id:" + String(index) + "  " + speaker + ":" + text
-	index = storys[index].to_id
 	return output
 	
-func run_branch(var value) -> String:
-	var selected = storys[index].selection[value]
-	storys[index].to_id = storys[index].branch[value]
-	var output = "id:" + String(index) + "  " + selected + ":" + String(storys[index].to_id)
-	index = storys[index].to_id
+func run_branch() -> String:
+	var selection = storys[index].selection
+	index = storys[index].branch
+	var output = "id:" + String(index) +  "  " + selection
 	return output
