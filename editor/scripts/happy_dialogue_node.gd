@@ -7,6 +7,8 @@ var node_data : Happy_Dialogue
 var node_coordinate : Vector2
 var id : int
 
+export(Happy_Story.TYPE) var type
+
 func _ready():
 	refresh_node()
 
@@ -25,11 +27,12 @@ func _process(delta):
 func refresh_node():
 	if node_data:
 		id = node_data.id
+		node_data.type = type
 		$HBoxContainer_0/id.text = String(node_data.id)
-		$HBoxContainer_1/name.text = node_data.speaker
-		$HBoxContainer_1/color.color = node_data.color
-		$HBoxContainer_2/scale.value = node_data.speed_scale
-		$HBoxContainer_2/voice.select(node_data.voice)
+		$HBoxContainer_0/name.text = node_data.speaker
+		#$HBoxContainer_1/color.color = node_data.color
+		#$HBoxContainer_2/scale.value = node_data.speed_scale
+		#$HBoxContainer_2/voice.select(node_data.voice)
 		$TextEdit.text = node_data.text
 
 func save_node():
@@ -43,28 +46,7 @@ func _on_name_text_changed(new_text):
 		save_node()
 	if editor:
 		editor.refresh_inspector()
-
-func _on_color_color_changed(color):
-	if node_data:
-		node_data.color = color
-		save_node()
-	if editor:
-		editor.refresh_inspector()
-
-func _on_scale_value_changed(value):
-	if node_data:
-		node_data.speed_scale = value
-		save_node()
-	if editor:
-		editor.refresh_inspector()
-
-func _on_voice_item_selected(index):
-	if node_data:
-		node_data.voice = index
-		save_node()
-	if editor:
-		editor.refresh_inspector()
-
+		
 func _on_TextEdit_text_changed():
 	if node_data:
 		node_data.text = $TextEdit.text
@@ -72,14 +54,36 @@ func _on_TextEdit_text_changed():
 	if editor:
 		editor.refresh_inspector()
 
+#func _on_color_color_changed(color):
+#	if node_data:
+#		node_data.color = color
+#		save_node()
+#	if editor:
+#		editor.refresh_inspector()
+
+#func _on_scale_value_changed(value):
+#	if node_data:
+#		node_data.speed_scale = value
+#		save_node()
+#	if editor:
+#		editor.refresh_inspector()
+
+#func _on_voice_item_selected(index):
+#	if node_data:
+#		node_data.voice = index
+#		save_node()
+#	if editor:
+#		editor.refresh_inspector()
+
 func _on_happy_dialogue_node_offset_changed():
 	node_coordinate = offset
 	save_node()
 
 func _on_happy_dialogue_node_mouse_entered():
-	editor.mouse_enter_node = self
-
+	if editor:
+		editor.mouse_enter_node = self
 
 func _on_happy_dialogue_node_mouse_exited():
-	if editor.mouse_enter_node == self:
-		editor.mouse_enter_node = null
+	if editor:
+		if editor.mouse_enter_node == self:
+			editor.mouse_enter_node = null

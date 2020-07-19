@@ -5,6 +5,7 @@
 [node name="happy_story_editor" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 500 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -81,7 +82,7 @@ margin_left = 288.0
 margin_top = 176.0
 margin_right = 447.0
 margin_bottom = 210.0
-items = [ "Create Dialogue Node", null, 0, false, false, 0, 0, null, "", false ]
+items = [ "Create Dialogue Node", null, 0, false, false, 0, 0, null, "", false, "Create Branch Node", null, 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }

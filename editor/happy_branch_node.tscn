@@ -5,17 +5,17 @@
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_branch_node.gd" type="Script" id=4]
 
 [sub_resource type="Theme" id=1]
-GraphNode/colors/title_color = Color( 1, 0.796078, 0.25098, 1 )
+GraphNode/colors/title_color = Color( 1, 0.968627, 0.223529, 1 )
 
-[node name="happy_dialogue_node" type="GraphNode"]
+[node name="happy_branch_node" type="GraphNode"]
 margin_right = 216.0
 margin_bottom = 80.0
 theme = SubResource( 1 )
 custom_fonts/title_font = ExtResource( 1 )
-title = "分支"
+title = "BRANCH"
 slot/0/left_enabled = true
 slot/0/left_type = 0
-slot/0/left_color = Color( 0.972549, 0.74902, 0.152941, 1 )
+slot/0/left_color = Color( 1, 0.972549, 0.223529, 1 )
 slot/0/right_enabled = false
 slot/0/right_type = 0
 slot/0/right_color = Color( 0.72549, 0.964706, 0.772549, 1 )
@@ -23,7 +23,8 @@ script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-slot_color = Color( 0.968627, 0.917647, 0.486275, 1 )
+type = 1
+slot_color_r = Color( 1, 0.968627, 0.223529, 1 )
 
 [node name="HBoxContainer_0" type="HBoxContainer" parent="."]
 margin_left = 16.0
@@ -54,4 +55,7 @@ margin_left = 78.0
 margin_right = 166.0
 margin_bottom = 24.0
 text = "New Branch"
+[connection signal="mouse_entered" from="." to="." method="_on_happy_branch_node_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_happy_branch_node_mouse_exited"]
+[connection signal="offset_changed" from="." to="." method="_on_happy_branch_node_offset_changed"]
 [connection signal="pressed" from="HBoxContainer_0/new_branch_btn" to="." method="_on_new_branch_btn_pressed"]

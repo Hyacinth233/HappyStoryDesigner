@@ -2,14 +2,14 @@ tool
 extends Happy_Story
 class_name Happy_Branch
 
-export(Dictionary) var selection = {}
+export(Dictionary) var selections = {}
 #branch = {index : to_id}
-export(Dictionary) var branch = {}
+export(Dictionary) var branches = {}
 
 func clone() -> Happy_Branch:
 	var new = get_script().new()
-	new.selection = selection.duplicate(true)
-	new.branch = branch.duplicate(true)
+	new.selections = selections.duplicate(true)
+	new.branches = branches.duplicate(true)
 	new.last_node = []
 	return new
 

@@ -31,5 +31,5 @@ margin_right = 198.0
 margin_bottom = 23.0
 rect_min_size = Vector2( 150, 23 )
 custom_fonts/font = ExtResource( 1 )
-text = "我带你们打"
 [connection signal="pressed" from="delete_btn" to="." method="_on_delete_btn_pressed"]
+[connection signal="text_changed" from="selection" to="." method="_on_selection_text_changed"]

@@ -3,16 +3,17 @@ extends Node
 
 class_name Happy_Story_Teller
 
-export(Resource) var director = Happy_Director.new()
+export(Resource) var director
+export(bool) var PLAY setget on_PLAY_btn_pressed
+export(bool) var NEXT setget on_NEXT_btn_pressed
+export(Array) var VALUES
 var last_director = Happy_Director.new()
-var storys : Dictionary
 var editor
 var index
 export var root = 0
 var last_root = -1
 
 func _ready():
-	storys = director.storys
 	index = root
 	
 func _process(delta):
@@ -25,38 +26,54 @@ func _process(delta):
 			if editor:
 				if root == -1:
 					editor.node_root_label.text = "Root Not Found!!"
+					last_root = -2
 				else:
 					editor.node_root_label.text = "Root : " + String(root)
 					last_root = root
+					
+func on_PLAY_btn_pressed(var btn):
+	play()
 
-func play() -> String:
-	match storys[index].type:
+func on_NEXT_btn_pressed(var btn):
+	next(VALUES)
+
+func play():
+	if not director.storys.has(index):
+		print_logs(index, "EROOR:Invalid get index!")
+		return
+	match director.storys[index].type:
 		Happy_Story.TYPE.DIALOGUE:			
-			return run_dialogue()
+			return play_dialogue()
 		Happy_Story.TYPE.BRANCH:
-			return run_branch()
-	return "EROOR: Unknown Type"
+			return play_branch()
+	print_logs(index, "EROOR:Unknown Type")
+	return 
 	
-func play_with_index(var _index : int) -> String:
+func play_with_index(var _index : int):
 	index = _index
 	return play()
 	
 func next(var values : Array = [-1]):
-	match storys[index].type:
+	match director.storys[index].type:
 		Happy_Story.TYPE.DIALOGUE:			
-			index = storys[index].to_id
+			index = director.storys[index].to_id
 		Happy_Story.TYPE.BRANCH:
 			index = index[values[0]]
 	return "EROOR: Unknown Type"
 	
-func run_dialogue() -> String:
-	var speaker = storys[index].speaker
-	var text = storys[index].text
-	var output = "id:" + String(index) + "  " + speaker + ":" + text
-	return output
+func play_dialogue() -> Happy_Dialogue:
+	var speaker = director.storys[index].speaker
+	var text = director.storys[index].text
+	print_logs(index, speaker + ":" + text)
+	return director.storys[index]
 	
-func run_branch() -> String:
-	var selection = storys[index].selection
-	index = storys[index].branch
-	var output = "id:" + String(index) +  "  " + selection
-	return output
+func play_branch() -> Happy_Branch:
+	var selection = director.storys[index].selection
+	print_logs(index, selection)
+	index = director.storys[index].branch
+	return director.storys[index]
+	
+func print_logs(var id, var text):
+	print("Happy Story Designer Log:")
+	print("Load Dialogue:  ID:" + String(index) + "  " + text)
+	pass

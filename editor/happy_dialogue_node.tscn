@@ -1,25 +1,24 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/happy_story_designer/font/SIMHEI.tres" type="DynamicFont" id=1]
 [ext_resource path="res://addons/happy_story_designer/font/SIMHEI_12.tres" type="DynamicFont" id=2]
-[ext_resource path="res://addons/happy_story_designer/theme/default_theme.tres" type="Theme" id=3]
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_dialogue_node.gd" type="Script" id=4]
 
 [sub_resource type="Theme" id=1]
 GraphNode/colors/title_color = Color( 0.513726, 0.847059, 0.454902, 1 )
 
 [node name="happy_dialogue_node" type="GraphNode"]
-margin_right = 32.0
-margin_bottom = 30.0
+margin_right = 220.0
+margin_bottom = 139.0
 theme = SubResource( 1 )
 custom_fonts/title_font = ExtResource( 1 )
-title = "对话"
+title = "DIALOGUE"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color( 0.317647, 0.588235, 0.254902, 1 )
 slot/0/right_enabled = true
 slot/0/right_type = 0
-slot/0/right_color = Color( 0.72549, 0.964706, 0.772549, 1 )
+slot/0/right_color = Color( 0.317647, 0.588235, 0.254902, 1 )
 slot/1/left_enabled = false
 slot/1/left_type = 0
 slot/1/left_color = Color( 1, 1, 1, 1 )
@@ -32,12 +31,6 @@ slot/2/left_color = Color( 1, 1, 1, 1 )
 slot/2/right_enabled = false
 slot/2/right_type = 0
 slot/2/right_color = Color( 1, 1, 1, 1 )
-slot/3/left_enabled = false
-slot/3/left_type = 0
-slot/3/left_color = Color( 1, 1, 1, 1 )
-slot/3/right_enabled = false
-slot/3/right_type = 0
-slot/3/right_color = Color( 1, 1, 1, 1 )
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -46,7 +39,7 @@ __meta__ = {
 [node name="HBoxContainer_0" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 24.0
-margin_right = 209.0
+margin_right = 204.0
 margin_bottom = 48.0
 
 [node name="id_name" type="Label" parent="HBoxContainer_0"]
@@ -63,105 +56,49 @@ __meta__ = {
 margin_left = 16.0
 margin_right = 74.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 49.292, 14 )
 text = "000"
 editable = false
+
+[node name="name_name" type="Label" parent="HBoxContainer_0"]
+margin_left = 78.0
+margin_top = 5.0
+margin_right = 102.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 2 )
+text = "Name"
+
+[node name="name" type="LineEdit" parent="HBoxContainer_0"]
+margin_left = 106.0
+margin_right = 188.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 51.326, 16 )
+custom_fonts/font = ExtResource( 2 )
 
 [node name="HBoxContainer_1" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 49.0
-margin_right = 209.0
-margin_bottom = 72.0
+margin_right = 204.0
+margin_bottom = 62.0
 
-[node name="name_name" type="Label" parent="HBoxContainer_1"]
-margin_top = 5.0
+[node name="text_name" type="Label" parent="HBoxContainer_1"]
 margin_right = 24.0
-margin_bottom = 18.0
+margin_bottom = 13.0
 custom_fonts/font = ExtResource( 2 )
-text = "名字"
-
-[node name="name" type="LineEdit" parent="HBoxContainer_1"]
-margin_left = 28.0
-margin_right = 110.0
-margin_bottom = 23.0
-rect_min_size = Vector2( 52.655, 16 )
-custom_fonts/font = ExtResource( 2 )
-text = "刘德华"
-
-[node name="color_name" type="Label" parent="HBoxContainer_1"]
-margin_left = 114.0
-margin_top = 5.0
-margin_right = 138.0
-margin_bottom = 18.0
-custom_fonts/font = ExtResource( 2 )
-text = "颜色"
-
-[node name="color" type="ColorPickerButton" parent="HBoxContainer_1"]
-margin_left = 142.0
-margin_right = 165.0
-margin_bottom = 23.0
-rect_min_size = Vector2( 23, 0 )
-custom_fonts/font = ExtResource( 2 )
-edit_alpha = false
+text = "Text"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="HBoxContainer_2" type="HBoxContainer" parent="."]
-margin_left = 16.0
-margin_top = 73.0
-margin_right = 209.0
-margin_bottom = 97.0
-
-[node name="scale_name" type="Label" parent="HBoxContainer_2"]
-margin_top = 5.0
-margin_right = 24.0
-margin_bottom = 18.0
-custom_fonts/font = ExtResource( 2 )
-text = "倍速"
-
-[node name="scale" type="SpinBox" parent="HBoxContainer_2"]
-margin_left = 28.0
-margin_right = 102.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 50, 14 )
-step = 0.1
-value = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="voice_name" type="Label" parent="HBoxContainer_2"]
-margin_left = 106.0
-margin_top = 5.0
-margin_right = 130.0
-margin_bottom = 18.0
-custom_fonts/font = ExtResource( 2 )
-text = "声音"
-
-[node name="voice" type="OptionButton" parent="HBoxContainer_2"]
-margin_left = 134.0
-margin_right = 193.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 25, 0 )
-theme = ExtResource( 3 )
-text = "第1项"
-items = [ "第0项", null, false, 0, null, "第1项", null, false, 1, null, "第2项", null, false, 2, null ]
-selected = 1
 
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_left = 16.0
-margin_top = 98.0
-margin_right = 209.0
-margin_bottom = 168.0
+margin_top = 63.0
+margin_right = 204.0
+margin_bottom = 133.0
 rect_min_size = Vector2( 0, 70 )
 custom_fonts/font = ExtResource( 2 )
 wrap_enabled = true
 [connection signal="mouse_entered" from="." to="." method="_on_happy_dialogue_node_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_happy_dialogue_node_mouse_exited"]
 [connection signal="offset_changed" from="." to="." method="_on_happy_dialogue_node_offset_changed"]
-[connection signal="text_changed" from="HBoxContainer_1/name" to="." method="_on_name_text_changed"]
-[connection signal="color_changed" from="HBoxContainer_1/color" to="." method="_on_color_color_changed"]
-[connection signal="value_changed" from="HBoxContainer_2/scale" to="." method="_on_scale_value_changed"]
-[connection signal="item_selected" from="HBoxContainer_2/voice" to="." method="_on_voice_item_selected"]
+[connection signal="text_changed" from="HBoxContainer_0/name" to="." method="_on_name_text_changed"]
 [connection signal="text_changed" from="TextEdit" to="." method="_on_TextEdit_text_changed"]
