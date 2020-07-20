@@ -19,15 +19,14 @@ align = 0
 
 [node name="index" type="Label" parent="."]
 margin_left = 38.0
-margin_top = 5.0
-margin_right = 44.0
+margin_top = 4.0
+margin_right = 46.0
 margin_bottom = 18.0
-custom_fonts/font = ExtResource( 1 )
 text = "0"
 
 [node name="selection" type="LineEdit" parent="."]
-margin_left = 48.0
-margin_right = 198.0
+margin_left = 50.0
+margin_right = 200.0
 margin_bottom = 23.0
 rect_min_size = Vector2( 150, 23 )
 custom_fonts/font = ExtResource( 1 )

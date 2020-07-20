@@ -151,8 +151,8 @@ func add_story_into_director(node):
 				node.node_data = Happy_Dialogue.new()
 			Happy_Story.TYPE.BRANCH:
 				node.node_data = Happy_Branch.new()
-				node.node_data.selections.clear()
-				node.node_data.branches.clear()
+				#node.node_data.selections.clear()
+				#node.node_data.branches.clear()
 			#在此处添加新的类型
 			
 	cur_director.storys[id] = node.node_data

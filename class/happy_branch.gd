@@ -2,9 +2,9 @@ tool
 extends Happy_Story
 class_name Happy_Branch
 
-export(Dictionary) var selections = {}
+export(Dictionary) var selections : Dictionary
 #branch = {index : to_id}
-export(Dictionary) var branches = {}
+export(Dictionary) var branches : Dictionary
 
 func clone() -> Happy_Branch:
 	var new = get_script().new()

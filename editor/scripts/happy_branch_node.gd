@@ -7,7 +7,7 @@ var node_data : Happy_Branch
 var node_coordinate : Vector2
 var id : int
 var branch_size = 0
-var branches = []
+var branches : Array
 export(Happy_Story.TYPE) var type
 export(Color) var slot_color_r : Color
 
@@ -52,7 +52,7 @@ func create_branch(var selection : String = "", var branch : int = -1):
 	add_child(branch_node)
 	branch_node.node = self
 	branch_node.selection = selection
-	set_slot(branch_size, false, 0, slot_color_r, true, 0, slot_color_r)
+	set_slot(branch_size + 1, false, 0, slot_color_r, true, 0, slot_color_r)
 	save_node()
 
 func delete_branch(var branch_node):
@@ -62,10 +62,10 @@ func delete_branch(var branch_node):
 		var to_node = editor.graph_nodes[to_id]
 		editor.graph_edit.disconnect_node(self.name, branch_node.index, to_node.name, 0)
 	if branch_size > 1:
-		for index in range(0, branch_size - 1):
+		for index in range(branch_node.index, branch_size - 1):
 			var src_index = branches[index].index
 			#修改prototype的显示index
-			if src_index > index:
+			if src_index != index:
 				branches[index].index = index
 				#复制旧key的selections和branches到新key，并清除旧key的内容
 				node_data.selections[index] = node_data.selections[src_index]
@@ -78,7 +78,6 @@ func delete_branch(var branch_node):
 					var to_node = editor.graph_nodes[to_id]
 					editor.graph_edit.disconnect_node(self.name, src_index, to_node.name, 0)
 					editor.graph_edit.connect_node(self.name, index, to_node.name, 0)
-					
 
 	else:
 		node_data.selections.erase(branch_node.index)
