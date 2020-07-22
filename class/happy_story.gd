@@ -10,3 +10,4 @@ export(TYPE) var type = TYPE.DIALOGUE
 export(int) var id = 0 
 export(int) var to_id = -1
 export(Array) var last_nodes : Array
+export(Dictionary) var last_slots : Dictionary  # node_id : slot
