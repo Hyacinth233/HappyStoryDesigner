@@ -220,15 +220,21 @@ func delete_node(var node : GraphNode):
 	cur_director.storys.erase(node.id)
 	cur_director.coordinate.erase(node.id)
 	graph_nodes.erase(node.id)
-			
-	if node.node_data.to_id != -1:	
-		var to_node = graph_nodes[node.node_data.to_id]
-		graph_edit.disconnect_node(node.name, 0, to_node.name, 0)
-		to_node.node_data.last_nodes.erase(node.id)
-	for id in node.node_data.last_nodes:
-		var from_node = graph_nodes[id]
-		graph_edit.disconnect_node(from_node.name, 0, node.name, 0)
-		from_node.node_data.to_id = -1
+	var to_id
+	match node.type:
+		Happy_Story.TYPE.DIALOGUE:
+			#断开向后连接
+			to_id = node.node_data.to_id
+			disconnect_to(node, 0, to_id)
+			#断开向前连接
+		Happy_Story.TYPE.BRANCH:
+			for index in node.node_data.branches:
+				to_id = node.node_data.branches[index]
+				disconnect_to(node, index, to_id)
+#	for id in node.node_data.last_nodes:
+#		var from_node = graph_nodes[id]
+#		graph_edit.disconnect_node(from_node.name, 0, node.name, 0)
+#		from_node.node_data.to_id = -1
 		
 	save_director()
 	node.queue_free()
@@ -240,10 +246,11 @@ func save_director():
 		cur_director.editor_offset = editor_offset
 		ResourceSaver.save(path, cur_director)
 	
-func repeat_auto_disconnect(from_node, from_slot, to_id, to_slot):
+func disconnect_to(from_node, from_slot, to_id):
 	if to_id != -1:
 		var src_to_node = graph_nodes[to_id]
-		graph_edit.disconnect_node(from_node.name, from_slot, src_to_node.name, to_slot)
+		graph_edit.disconnect_node(from_node.name, from_slot, src_to_node.name, 0)
+		src_to_node.node_data.last_nodes.erase(from_node.id)
 		
 #----- signer -----
 
@@ -295,14 +302,14 @@ func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
 	match from_node.type:
 		Happy_Story.TYPE.DIALOGUE:
 			to_id = from_node.node_data.to_id
-			repeat_auto_disconnect(from_node, from_slot, to_id, to_slot)
+			disconnect_to(from_node, from_slot, to_id)
 #			if to_id != -1:
 #				var src_to_node = graph_nodes[from_node.node_data.to_id]
 #				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
 			from_node.node_data.to_id = to_node.id
 		Happy_Story.TYPE.BRANCH:
 			to_id = from_node.node_data.branches[from_slot]
-			repeat_auto_disconnect(from_node, from_slot, to_id, to_slot)
+			disconnect_to(from_node, from_slot, to_id)
 #			if to_id != -1:
 #				var src_to_node = graph_nodes[from_node.node_data.to_id]
 #				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
