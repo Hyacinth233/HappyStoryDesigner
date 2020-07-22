@@ -102,7 +102,7 @@ func load_nodes_from_director(director : Happy_Director):
 		node_size = node_ids.size()
 		graph_nodes[key] = node
 		node.node_coordinate = director.coordinate[key]
-		print(node.node_coordinate)
+#		print(node.node_coordinate)
 		node.offset = director.coordinate[key]
 		graph_edit.add_child(node)
 		
@@ -240,6 +240,11 @@ func save_director():
 		cur_director.editor_offset = editor_offset
 		ResourceSaver.save(path, cur_director)
 	
+func repeat_auto_disconnect(from_node, from_slot, to_id, to_slot):
+	if to_id != -1:
+		var src_to_node = graph_nodes[to_id]
+		graph_edit.disconnect_node(from_node.name, from_slot, src_to_node.name, to_slot)
+		
 #----- signer -----
 
 func _on_editor_selection_changed():
@@ -286,15 +291,21 @@ func _on_graph_editor_scroll_offset_changed(ofs):
 func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
 	var from_node = graph_edit.get_node(from)
 	var to_node = graph_edit.get_node(to)
-
-	if from_node.node_data.to_id != -1:
-		var src_to_node = graph_nodes[from_node.node_data.to_id]
-		graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
-		
+	var to_id
 	match from_node.type:
 		Happy_Story.TYPE.DIALOGUE:
+			to_id = from_node.node_data.to_id
+			repeat_auto_disconnect(from_node, from_slot, to_id, to_slot)
+#			if to_id != -1:
+#				var src_to_node = graph_nodes[from_node.node_data.to_id]
+#				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
 			from_node.node_data.to_id = to_node.id
 		Happy_Story.TYPE.BRANCH:
+			to_id = from_node.node_data.branches[from_slot]
+			repeat_auto_disconnect(from_node, from_slot, to_id, to_slot)
+#			if to_id != -1:
+#				var src_to_node = graph_nodes[from_node.node_data.to_id]
+#				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
 			from_node.node_data.branches[from_slot] = to_node.id
 		#在此处添加新的类型
 		
