@@ -13,7 +13,7 @@ var editor_selection : EditorSelection
 var mouse_enter_node : GraphNode = null
 var popup_node : GraphNode
 
-var graph_nodes = {}
+var graph_nodes : Dictionary
 var copied_datas = [Happy_Story]
 var selected_nodes = [GraphNode]
 var selected_position = Vector2.ZERO
@@ -35,7 +35,7 @@ var has_ready = false
 func _ready():
 	set_current_teller(null)
 	if the_plugin:
-		var editor_interface:EditorInterface = the_plugin.get_editor_interface()
+		var editor_interface : EditorInterface = the_plugin.get_editor_interface()
 		editor_selection = editor_interface.get_selection()
 		editor_selection.connect("selection_changed", self, "_on_editor_selection_changed")
 	
@@ -53,7 +53,6 @@ func set_current_teller(teller):
 	clear_nodes()
 	if teller:
 		if teller.director:
-			#print("有director")
 			graph_edit.visible = true
 			warning_label_0.visible = false
 			warning_label_1.visible = false
@@ -66,14 +65,12 @@ func set_current_teller(teller):
 			load_nodes_from_director(cur_director)
 			
 		else:
-			#print("木有director")
 			graph_edit.visible = false
 			warning_label_0.visible = false
 			warning_label_1.visible = true
 			teller.editor = self
 		
 	else:
-		#print("这玩儿就不是Teller")
 		cur_teller = null
 		cur_director = null
 		graph_edit.visible = false
@@ -81,14 +78,13 @@ func set_current_teller(teller):
 		warning_label_1.visible = false
 	
 func refresh_inspector():
-	var editor_interface:EditorInterface = the_plugin.get_editor_interface()
+	var editor_interface : EditorInterface = the_plugin.get_editor_interface()
 	editor_interface.get_inspector().refresh()
 	director_name_label.text = director_name
 	node_size = node_ids.size()
 	node_size_label.text = "Story Node Size : " + String(node_size)	
 	
 func load_nodes_from_director(director : Happy_Director):
-	var graph_node_dictionary : Dictionary
 	var node
 	for key in director.storys:
 		match director.storys[key].type:
@@ -104,28 +100,34 @@ func load_nodes_from_director(director : Happy_Director):
 		node.refresh_node()
 		node_ids.append(key)
 		node_size = node_ids.size()
-		graph_edit.add_child(node)
 		graph_nodes[key] = node
+		node.node_coordinate = director.coordinate[key]
+		print(node.node_coordinate)
 		node.offset = director.coordinate[key]
-		graph_node_dictionary[key] = node
+		graph_edit.add_child(node)
+		
 	refresh_inspector()
 	
-	for key in graph_node_dictionary:
-		match graph_node_dictionary[key].type:
+	for key in graph_nodes:
+		match graph_nodes[key].type:
 			Happy_Story.TYPE.DIALOGUE:
-				var next_key = graph_node_dictionary[key].node_data.to_id
-				if next_key != -1:
-					if graph_node_dictionary[next_key]:
-						graph_edit.connect_node(graph_node_dictionary[key].name, 0, graph_node_dictionary[next_key].name, 0)
-						#print(String(key) + "~" + String(next_key))
+				var to_id = graph_nodes[key].node_data.to_id
+				if to_id != -1:
+					if graph_nodes[to_id]:
+						graph_edit.connect_node(graph_nodes[key].name, 0, graph_nodes[to_id].name, 0)
+						#print(String(key) + "~" + String(to_id))
 					else:
-						next_key = -1
+						to_id = -1
 			Happy_Story.TYPE.BRANCH:
-				var branches = graph_node_dictionary[key].node_data.branches
+				var branches = graph_nodes[key].node_data.branches
 				if branches.size() != 0:
 					for index in branches:
 						var to_id = branches[index]
-						#graph_edit.connect_node(graph_node_dictionary[key].name, index, graph_node_dictionary[to_id].name, 0)
+						if to_id != -1:
+							if graph_nodes[to_id]:
+								graph_edit.connect_node(graph_nodes[key].name, index, graph_nodes[to_id].name, 0)
+							else:
+								to_id = -1
 
 func create_node(var id):
 	var node : GraphNode
@@ -241,18 +243,15 @@ func save_director():
 #----- signer -----
 
 func _on_editor_selection_changed():
-	var selections:Array = editor_selection.get_selected_nodes()
+	var selections : Array = editor_selection.get_selected_nodes()
 	if selections.size() > 0:
 		for selection in selections:
 			if selection is Happy_Story_Teller:
-				#print("找到Teller了！")
 				set_current_teller(selection)
 				break
 			else:
-				#print("没找到Teller")
 				set_current_teller(null)
 	else:
-		#print("大哥你没选东西啊！")
 		set_current_teller(null)
 		
 

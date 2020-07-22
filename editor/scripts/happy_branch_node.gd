@@ -36,6 +36,7 @@ func refresh_node():
 		if branch_size < node_data.selections.size():
 			for index in range(branch_size, node_data.selections.size()):
 				create_branch(node_data.selections[index], node_data.branches[index])
+		
 
 func save_node():
 	editor.cur_director.storys[id] = node_data
@@ -53,7 +54,6 @@ func create_branch(var selection : String = "", var branch : int = -1):
 	branch_node.node = self
 	branch_node.selection = selection
 	set_slot(branch_size + 1, false, 0, slot_color_r, true, 0, slot_color_r)
-	save_node()
 
 func delete_branch(var branch_node):
 	branches.erase(branch_node)
