@@ -4,12 +4,14 @@ extends Node
 class_name Happy_Story_Teller
 
 export(Resource) var director
+export(bool) var RETURN_TO_ROOT setget on_RETURN_TO_ROOT_btn_pressed
 export(bool) var PLAY setget on_PLAY_btn_pressed
 export(bool) var NEXT setget on_NEXT_btn_pressed
-export(Array) var VALUES
+export(Array) var VALUES = [-1] 
 var last_director = Happy_Director.new()
 var editor
-var index
+var index = 0
+var indexs : Dictionary
 export var root = 0
 var last_root = -1
 
@@ -36,6 +38,9 @@ func on_PLAY_btn_pressed(var btn):
 
 func on_NEXT_btn_pressed(var btn):
 	next(VALUES)
+	
+func on_RETURN_TO_ROOT_btn_pressed(var btn):
+	index = root
 
 func play():
 	if not director.storys.has(index):
@@ -53,13 +58,15 @@ func play_with_index(var _index : int):
 	index = _index
 	return play()
 	
-func next(var values : Array = [-1]):
+func next(var values : Array):
 	match director.storys[index].type:
 		Happy_Story.TYPE.DIALOGUE:			
 			index = director.storys[index].to_id
 		Happy_Story.TYPE.BRANCH:
-			index = index[values[0]]
-	return "EROOR: Unknown Type"
+			if !indexs.keys().has(values[0]):
+				return "ERROR: Can't Find Branch With Index " + String(values[0]) 
+			index = indexs[values[0]]
+	return "ERROR: Unknown Type"
 	
 func play_dialogue() -> Happy_Dialogue:
 	var speaker = director.storys[index].speaker
@@ -68,9 +75,9 @@ func play_dialogue() -> Happy_Dialogue:
 	return director.storys[index]
 	
 func play_branch() -> Happy_Branch:
-	var selection = director.storys[index].selection
-	print_logs(index, selection)
-	index = director.storys[index].branch
+	var selections = director.storys[index].selections
+	print_logs(index, String(selections))
+	indexs = director.storys[index].branches
 	return director.storys[index]
 	
 func print_logs(var id, var text):
