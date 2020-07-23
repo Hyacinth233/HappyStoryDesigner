@@ -1,13 +1,13 @@
 tool
-extends GraphNode
+extends Happy_Story_Node
 
-var editor
-var director : Happy_Director
+#var editor
+#var director : Happy_Director
 var node_data : Happy_Dialogue
-var node_coordinate : Vector2
-var id : int
+#var node_coordinate : Vector2
+#var id : int
 
-export(Happy_Story.TYPE) var type
+#export(Happy_Story.TYPE) var type
 
 func _ready():
 	refresh_node()

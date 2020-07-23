@@ -17,6 +17,9 @@ var last_root = -1
 
 func _ready():
 	index = root
+	if Engine.editor_hint:
+		if root != -1:
+			editor.graph_nodes[root].overlay = GraphNode.OVERLAY_BREAKPOINT
 	
 func _process(delta):
 	if Engine.editor_hint:
@@ -31,6 +34,9 @@ func _process(delta):
 					last_root = -2
 				else:
 					editor.node_root_label.text = "Root : " + String(root)
+					if last_root != -1:
+						editor.graph_nodes[last_root].overlay = GraphNode.OVERLAY_DISABLED
+					editor.graph_nodes[root].overlay = GraphNode.OVERLAY_BREAKPOINT
 					last_root = root
 					
 func on_PLAY_btn_pressed(var btn):

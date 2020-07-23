@@ -1,17 +1,17 @@
 tool
-extends GraphNode
+extends Happy_Story_Node
 
-var editor
-var director : Happy_Director
+#var editor
+#var director : Happy_Director
 var node_data : Happy_Branch
-var node_coordinate : Vector2
-var id : int
+#var node_coordinate : Vector2
+#var id : int
 var branch_size = 0
 var branches : Array
-export(Happy_Story.TYPE) var type
+#export(Happy_Story.TYPE) var type
 export(Color) var slot_color_r : Color
 
-const branch_zero = preload("../branch.tscn")
+#const branch_zero = preload("../branch.tscn")
 
 func _ready():
 	refresh_node()
