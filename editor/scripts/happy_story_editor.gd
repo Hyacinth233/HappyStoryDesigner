@@ -82,7 +82,7 @@ func refresh_inspector():
 	editor_interface.get_inspector().refresh()
 	director_name_label.text = director_name
 	node_size = node_ids.size()
-	node_size_label.text = "Story Node Size : " + String(node_size)	
+	node_size_label.text = "Story Node Size : " + String(node_size)
 	
 func load_nodes_from_director(director : Happy_Director):
 	var node
@@ -107,6 +107,7 @@ func load_nodes_from_director(director : Happy_Director):
 		graph_edit.add_child(node)
 		
 	refresh_inspector()
+	cur_teller.refresh_root_graph_node()
 	
 	for key in graph_nodes:
 		match graph_nodes[key].type:
@@ -285,7 +286,6 @@ func _on_graph_editor_popup_request(position):
 	else:
 		create_menu.set_global_position(position)
 		create_menu.popup()
-
 
 func _on_create_menu_id_pressed(id):
 	create_node(id)
