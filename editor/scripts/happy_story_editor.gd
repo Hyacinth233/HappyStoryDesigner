@@ -273,8 +273,11 @@ func _on_editor_selection_changed():
 				set_current_teller(selection)
 				break
 			else:
-				set_current_teller(null)
+				if not cur_teller:
+					set_current_teller(null)
 	else:
+		if cur_teller:
+			return
 		set_current_teller(null)
 		
 

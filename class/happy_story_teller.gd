@@ -17,7 +17,7 @@ var last_root = -1
 
 func _ready():
 	index = root
-	if Engine.editor_hint:
+	if Engine.editor_hint and editor:
 		refresh_root_graph_node()
 	
 func _process(delta):
