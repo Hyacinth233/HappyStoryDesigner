@@ -11,7 +11,7 @@ var branches : Array
 #export(Happy_Story.TYPE) var type
 export(Color) var slot_color_r : Color
 
-#const branch_zero = preload("../branch.tscn")
+const branch_zero = preload("../branch.tscn")
 
 func _ready():
 	refresh_node()

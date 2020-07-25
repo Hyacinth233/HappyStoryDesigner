@@ -11,5 +11,6 @@ func clone() -> Happy_Branch:
 	new.selections = selections.duplicate(true)
 	new.branches = branches.duplicate(true)
 	new.last_node = []
+	new.tag = tag
 	return new
 

@@ -1,0 +1,76 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/happy_story_designer/editor/scripts/set_tag_window.gd" type="Script" id=1]
+
+[sub_resource type="Theme" id=1]
+WindowDialog/colors/title_color = Color( 0.882353, 0.227451, 0.227451, 1 )
+WindowDialog/constants/close_h_ofs = 18
+WindowDialog/constants/close_v_ofs = 18
+WindowDialog/constants/scaleborder_size = 4
+WindowDialog/constants/title_height = 20
+WindowDialog/fonts/title_font = null
+WindowDialog/icons/close = null
+WindowDialog/icons/close_highlight = null
+WindowDialog/styles/panel = null
+
+[node name="set_tag_window" type="Control"]
+margin_top = -1.0
+margin_right = 274.0
+margin_bottom = 118.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+visible = true
+margin_right = 200.0
+margin_bottom = 70.0
+window_title = "Set a tag"
+dialog_hide_on_ok = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="ConfirmationDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+clear_button_enabled = true
+placeholder_text = "Please enter tag name"
+caret_blink = true
+caret_blink_speed = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+visible = true
+margin_right = 258.0
+margin_bottom = 75.0
+theme = SubResource( 1 )
+window_title = "ERROR"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="AcceptDialog"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -121.0
+margin_top = -29.5
+margin_right = 121.0
+margin_bottom = 1.5
+text = "Tag named {/tag} has already existed !
+Please try another name."
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]

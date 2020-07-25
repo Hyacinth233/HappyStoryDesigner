@@ -9,5 +9,3 @@ var node_coordinate : Vector2
 var id : int
 
 export(Happy_Story.TYPE) var type
-
-const branch_zero = preload("../branch.tscn")

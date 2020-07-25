@@ -29,6 +29,7 @@ onready var node_menu = $node_menu
 
 const happy_dialogue_node = preload("../happy_dialogue_node.tscn")
 const happy_branch_node = preload("../happy_branch_node.tscn")
+const set_tag_window = preload("../set_tag_window.tscn")
 
 var has_ready = false
 
@@ -173,8 +174,13 @@ func create_new_id() -> int:
 	node_ids.append(new_id)
 	return new_id
 	
-func set_root_node(var node : GraphNode):	
-	cur_teller.root = node.id
+func set_node_tag(var node : GraphNode):	
+	var window
+	window = set_tag_window.instance()
+	window.editor = self
+	window.node = node
+	graph_edit.add_child(window)
+	window.window.set_global_position(node.get_global_rect().position)
 	refresh_inspector()
 
 func copy_nodes(var nodes : Array):
@@ -213,8 +219,8 @@ func paste_nodes(var datas : Array):
 		refresh_inspector()
 
 func delete_node(var node : GraphNode):
-	if cur_teller.root == node.id:
-		cur_teller.root = -1
+#	if cur_teller.root == node.id:
+#		cur_teller.root = -1
 		#print("Root Not Found")
 	node_ids.erase(node.id)
 	node_size = node_ids.size()
@@ -297,7 +303,7 @@ func _on_create_menu_id_pressed(id):
 func _on_node_menu_id_pressed(id):
 	match id:
 		0:
-			set_root_node(popup_node)
+			set_node_tag(popup_node)
 			
 func _on_graph_editor_delete_nodes_request():
 	for node in selected_nodes:

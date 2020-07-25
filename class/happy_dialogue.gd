@@ -14,6 +14,7 @@ func clone() -> Happy_Dialogue:
 	new.last_nodes = []
 	new.speaker = speaker
 	new.text = text
+	new.tag = tag
 	#new.color = color
 	#new.voice = voice
 	#new.speed_scale = speed_scale
