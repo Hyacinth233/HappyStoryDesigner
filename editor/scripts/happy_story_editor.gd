@@ -107,7 +107,7 @@ func load_nodes_from_director(director : Happy_Director):
 		graph_edit.add_child(node)
 		
 	refresh_inspector()
-	cur_teller.refresh_root_graph_node()
+#	cur_teller.refresh_root_graph_node()
 	
 	for key in graph_nodes:
 		match graph_nodes[key].type:
@@ -229,9 +229,9 @@ func delete_node(var node : GraphNode):
 			disconnect_from(node)
 			disconnect_to(node, 0, to_id)
 		Happy_Story.TYPE.BRANCH:
+			disconnect_from(node)
 			for index in node.node_data.branches:
 				to_id = node.node_data.branches[index]
-				disconnect_from(node)
 				disconnect_to(node, index, to_id)
 
 	save_director()
@@ -254,6 +254,7 @@ func disconnect_to(from_node, from_slot, to_id):
 func disconnect_from(node):
 	for id in node.node_data.last_nodes:
 		var from_node = graph_nodes[id]
+		print(from_node)
 		var from_slot = node.node_data.last_slots[id]
 		graph_edit.disconnect_node(from_node.name, from_slot, node.name, 0)
 		match from_node.type:

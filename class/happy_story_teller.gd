@@ -12,13 +12,11 @@ var last_director = Happy_Director.new()
 var editor
 var index = 0
 var indexs : Dictionary
-export var root = 0
+export var root = -1
 var last_root = -1
 
 func _ready():
 	index = root
-	if Engine.editor_hint and editor:
-		refresh_root_graph_node()
 	
 func _process(delta):
 	if Engine.editor_hint:
@@ -26,20 +24,7 @@ func _process(delta):
 			if editor:
 				editor.set_current_teller(self)
 				last_director = director
-		if last_root != root:
-			if editor:
-				if root == -1:
-					editor.node_root_label.text = "Root Not Found!!"
-					last_root = -2
-				else:
-					editor.node_root_label.text = "Root : " + String(root)
-					refresh_root_graph_node()
-					last_root = root
 					
-func refresh_root_graph_node():
-	if last_root != -1:
-		editor.graph_nodes[last_root].overlay = GraphNode.OVERLAY_DISABLED
-	editor.graph_nodes[root].overlay = GraphNode.OVERLAY_BREAKPOINT
 	
 func on_PLAY_btn_pressed(var btn):
 	play()
