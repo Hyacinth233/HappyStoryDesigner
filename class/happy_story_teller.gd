@@ -4,18 +4,19 @@ extends Node
 class_name Happy_Story_Teller
 
 export(Resource) var director
+export(bool) var refresh_tags setget on_refresh_tags_pressed
+export(bool) var to_tag setget on_to_tag_pressed
+export(String) var tag
 export(Dictionary) var tags
-#export(bool) var RETURN_TO_ROOT setget on_RETURN_TO_ROOT_btn_pressed
-#export(bool) var PLAY setget on_PLAY_btn_pressed
-#export(bool) var NEXT setget on_NEXT_btn_pressed
-#export(Array) var VALUES = [-1] 
+export(bool) var play setget on_play_pressed
+export(bool) var next setget on_next_pressed
+export(Array) var values = [-1]
+
+
 var last_director = Happy_Director.new()
 var editor
-var index = 0
+export(int) var index = 0
 var indexs : Dictionary
-#export var root = -1
-#var last_root = -1
-export var tags_ready = false
 
 func _ready():
 	pass
@@ -26,13 +27,27 @@ func _process(delta):
 			if last_director != director:
 				editor.set_current_teller(self)
 				last_director = director
-			if not tags_ready and director:
-				tags.clear()
-				for story in director.storys:
-					tags[director.storys[story].tag] = director.storys[story].id
-				tags_ready = true
-				editor.refresh_inspector()
 
+func on_refresh_tags_pressed(var btn):
+	if Engine.editor_hint:
+		if editor:
+			tags.clear()
+			for story in director.storys:
+				tags[director.storys[story].tag] = director.storys[story].id
+			editor.refresh_inspector()
+			
+func on_to_tag_pressed(var btn):
+	to_tag()
+	
+func on_play_pressed(var btn):
+	play()
+	
+func on_next_pressed(var btn):
+	next(values)
+	
+func to_tag(var temp_tag = tag):
+	index = tags[temp_tag]
+	
 func play():
 	if not director.storys.has(index):
 		print_logs(index, "EROOR: Invalid get index!")
