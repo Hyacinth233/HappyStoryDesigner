@@ -23,7 +23,6 @@ __meta__ = {
 }
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
-visible = true
 margin_right = 200.0
 margin_bottom = 70.0
 window_title = "Set a tag"
@@ -48,7 +47,6 @@ __meta__ = {
 }
 
 [node name="AcceptDialog" type="AcceptDialog" parent="."]
-visible = true
 margin_right = 258.0
 margin_bottom = 75.0
 theme = SubResource( 1 )

@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://addons/happy_story_designer/font/SIMHEI_12.tres" type="DynamicFont" id=1]
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_branch_prototype.gd" type="Script" id=2]
 
 [node name="branch" type="HBoxContainer"]
@@ -13,22 +12,21 @@ __meta__ = {
 
 [node name="delete_btn" type="Button" parent="."]
 margin_right = 34.0
-margin_bottom = 23.0
+margin_bottom = 24.0
 text = "Del"
 align = 0
 
 [node name="index" type="Label" parent="."]
 margin_left = 38.0
-margin_top = 4.0
+margin_top = 5.0
 margin_right = 46.0
-margin_bottom = 18.0
+margin_bottom = 19.0
 text = "0"
 
 [node name="selection" type="LineEdit" parent="."]
 margin_left = 50.0
 margin_right = 200.0
-margin_bottom = 23.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 150, 23 )
-custom_fonts/font = ExtResource( 1 )
 [connection signal="pressed" from="delete_btn" to="." method="_on_delete_btn_pressed"]
 [connection signal="text_changed" from="selection" to="." method="_on_selection_text_changed"]

@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://addons/happy_story_designer/font/SIMHEI_12.tres" type="DynamicFont" id=2]
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_dialogue_node.gd" type="Script" id=4]
 
 [node name="happy_dialogue_node" type="GraphNode"]
@@ -34,7 +33,7 @@ __meta__ = {
 [node name="HBoxContainer_0" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 24.0
-margin_right = 221.0
+margin_right = 204.0
 margin_bottom = 48.0
 
 [node name="id_name" type="Label" parent="HBoxContainer_0"]
@@ -62,15 +61,14 @@ text = "Name"
 
 [node name="name" type="LineEdit" parent="HBoxContainer_0"]
 margin_left = 123.0
-margin_right = 205.0
+margin_right = 181.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 51.326, 16 )
-custom_fonts/font = ExtResource( 2 )
 
 [node name="HBoxContainer_1" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 49.0
-margin_right = 221.0
+margin_right = 204.0
 margin_bottom = 63.0
 
 [node name="text_name" type="Label" parent="HBoxContainer_1"]
@@ -84,10 +82,9 @@ __meta__ = {
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_left = 16.0
 margin_top = 64.0
-margin_right = 221.0
+margin_right = 204.0
 margin_bottom = 134.0
 rect_min_size = Vector2( 0, 70 )
-custom_fonts/font = ExtResource( 2 )
 wrap_enabled = true
 [connection signal="mouse_entered" from="." to="." method="_on_happy_dialogue_node_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_happy_dialogue_node_mouse_exited"]

@@ -106,6 +106,9 @@ func load_nodes_from_director(director : Happy_Director):
 #		print(node.node_coordinate)
 		node.offset = director.coordinate[key]
 		graph_edit.add_child(node)
+		if node.node_data.tag:
+			node.overlay = GraphNode.OVERLAY_BREAKPOINT
+			node.title = node.node_data.tag + " : " + Happy_Story.TYPE.keys()[node.type]
 		
 	refresh_inspector()
 #	cur_teller.refresh_root_graph_node()
@@ -174,7 +177,7 @@ func create_new_id() -> int:
 	node_ids.append(new_id)
 	return new_id
 	
-func set_node_tag(var node : GraphNode):	
+func set_node_tag(var node : Happy_Story_Node):	
 	var window
 	window = set_tag_window.instance()
 	window.editor = self
@@ -218,7 +221,7 @@ func paste_nodes(var datas : Array):
 		#print(node.offset)
 		refresh_inspector()
 
-func delete_node(var node : GraphNode):
+func delete_node(var node : Happy_Story_Node):
 #	if cur_teller.root == node.id:
 #		cur_teller.root = -1
 		#print("Root Not Found")
@@ -239,6 +242,9 @@ func delete_node(var node : GraphNode):
 			for index in node.node_data.branches:
 				to_id = node.node_data.branches[index]
 				disconnect_to(node, index, to_id)
+	
+	if node.node_data.tag:
+		cur_teller.tags.erase(node.node_data.tag)
 
 	save_director()
 	node.queue_free()
@@ -307,7 +313,7 @@ func _on_node_menu_id_pressed(id):
 			
 func _on_graph_editor_delete_nodes_request():
 	for node in selected_nodes:
-		if node is GraphNode:
+		if node is Happy_Story_Node:
 			delete_node(node)
 			#print(selected_nodes)
 
@@ -362,10 +368,9 @@ func _on_graph_editor_disconnection_request(from, from_slot, to, to_slot):
 func _on_graph_editor_copy_nodes_request():
 	copied_datas.clear()
 	for node in selected_nodes:
-		if node is GraphNode:
+		if node is Happy_Story_Node:
 			copied_datas.append(node.node_data)
 			#print(copied_datas)
 
 func _on_graph_editor_paste_nodes_request():
 	paste_nodes(copied_datas)
-
