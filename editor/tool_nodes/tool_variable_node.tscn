@@ -1,0 +1,113 @@
+[gd_scene format=2]
+
+[node name="tool_variable_node" type="GraphNode"]
+margin_right = 145.0
+margin_bottom = 115.0
+custom_colors/title_color = Color( 0.968627, 0.4, 0.933333, 1 )
+title = "Variable"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color( 0.968627, 0.4, 0.933333, 1 )
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color( 0.968627, 0.4, 0.933333, 1 )
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color( 1, 1, 1, 1 )
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color( 1, 1, 1, 1 )
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color( 1, 1, 1, 1 )
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color( 1, 1, 1, 1 )
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color( 1, 1, 1, 1 )
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IO" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 129.0
+margin_bottom = 38.0
+
+[node name="input" type="Label" parent="IO"]
+margin_right = 33.0
+margin_bottom = 14.0
+text = "input"
+
+[node name="Label" type="Label" parent="IO"]
+margin_left = 37.0
+margin_right = 113.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "output"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 39.0
+margin_right = 129.0
+margin_bottom = 59.0
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_top = 3.0
+margin_right = 31.0
+margin_bottom = 17.0
+text = "Field"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
+margin_left = 35.0
+margin_right = 113.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Global"
+items = [ "Global", null, false, 0, null, "Local", null, false, 1, null ]
+selected = 0
+
+[node name="name" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 60.0
+margin_right = 129.0
+margin_bottom = 84.0
+
+[node name="Label" type="Label" parent="name"]
+margin_top = 5.0
+margin_right = 38.0
+margin_bottom = 19.0
+text = "Name"
+
+[node name="LineEdit" type="LineEdit" parent="name"]
+margin_left = 42.0
+margin_right = 113.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="value" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 85.0
+margin_right = 129.0
+margin_bottom = 109.0
+
+[node name="Label" type="Label" parent="value"]
+margin_top = 5.0
+margin_right = 35.0
+margin_bottom = 19.0
+text = "Value"
+
+[node name="SpinBox" type="SpinBox" parent="value"]
+margin_left = 39.0
+margin_right = 113.0
+margin_bottom = 24.0
+size_flags_horizontal = 3

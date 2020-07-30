@@ -10,7 +10,7 @@ export(String) var tag
 export(Dictionary) var tags
 export(bool) var play setget on_play_pressed
 export(bool) var next setget on_next_pressed
-export(Array) var values = [-1]
+export(Array) var params = [-1]
 
 
 var last_director = Happy_Director.new()
@@ -43,7 +43,7 @@ func on_play_pressed(var btn):
 	play()
 	
 func on_next_pressed(var btn):
-	next(values)
+	next(params)
 	
 func to_tag(var temp_tag = tag):
 	index = tags[temp_tag]
@@ -64,16 +64,16 @@ func play_with_index(var _index : int):
 	index = _index
 	return play()
 	
-func next(var values : Array):
+func next(var temp_params : Array):
 	if index == -1:
 		print_logs(index, "END!")
 	match director.storys[index].type:
 		Happy_Story.TYPE.DIALOGUE:			
 			index = director.storys[index].to_id
 		Happy_Story.TYPE.BRANCH:
-			if !indexs.keys().has(values[0]):
-				return "ERROR: Can't Find Branch With Index " + String(values[0]) 
-			index = indexs[values[0]]
+			if !indexs.keys().has(temp_params[0]):
+				return "ERROR: Can't Find Branch With Index " + String(temp_params[0]) 
+			index = indexs[temp_params[0]]
 		_:
 			index = -1
 			return "ERROR: Unknown Type"

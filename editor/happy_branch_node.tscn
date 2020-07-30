@@ -3,7 +3,7 @@
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_branch_node.gd" type="Script" id=4]
 
 [node name="happy_branch_node" type="GraphNode"]
-margin_right = 216.0
+margin_right = 201.0
 margin_bottom = 80.0
 custom_colors/title_color = Color( 1, 0.968627, 0.223529, 1 )
 title = "BRANCH"
@@ -29,7 +29,7 @@ slot_color_r = Color( 1, 0.968627, 0.223529, 1 )
 [node name="HBoxContainer_0" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 24.0
-margin_right = 200.0
+margin_right = 185.0
 margin_bottom = 48.0
 
 [node name="id_name" type="Label" parent="HBoxContainer_0"]
@@ -53,12 +53,13 @@ editable = false
 margin_left = 81.0
 margin_right = 169.0
 margin_bottom = 24.0
+size_flags_horizontal = 3
 text = "New Branch"
 
 [node name="HBoxContainer_1" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 49.0
-margin_right = 200.0
+margin_right = 185.0
 margin_bottom = 63.0
 
 [node name="id_name" type="Label" parent="HBoxContainer_1"]

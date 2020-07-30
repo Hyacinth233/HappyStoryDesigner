@@ -6,14 +6,8 @@ var last_teller : Happy_Story_Teller
 
 export(Dictionary) var local_values : Dictionary # name : value
 export(Dictionary) var global_values : Dictionary
+export(Dictionary) var all_local_values : Dictionary
 
-func _process(delta):
-	if last_teller != teller and teller:
-		if teller.director:
-			local_values.clear()
-			local_values = teller.director.values
-			last_teller = teller
-			
 func get_global_values(var name : String) -> int:
 	if not local_values.has(name):
 		print("Happy Story Designer Log:")
@@ -79,7 +73,7 @@ enum CONDITION{
 	GREATER	
 }
 
-func math_condition_value(var condition : int, var is_global_0 : bool, var name_0 : String, var temp_value_0 : int, var is_global_1 : bool, var name_1 : String, var temp_value_1 : int) -> bool:
+func condition_math(var condition : int, var is_global_0 : bool, var name_0 : String, var temp_value_0 : int, var is_global_1 : bool, var name_1 : String, var temp_value_1 : int) -> bool:
 	if name_0:
 		temp_value_0 = global_values[name_0] if is_global_0 else local_values[name_0]
 	if name_1:
@@ -96,4 +90,7 @@ func math_condition_value(var condition : int, var is_global_0 : bool, var name_
 			print("Happy Story Designer Log:")
 			print("ERROR: How do you turn this on ?")
 			return false
-
+	
+func condition_bool(var is_global : bool, var name : String) -> bool:
+	var temp_value = global_values[name] if is_global else local_values[name]
+	return true if temp_value >0 else false

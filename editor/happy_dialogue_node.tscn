@@ -3,8 +3,8 @@
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_dialogue_node.gd" type="Script" id=4]
 
 [node name="happy_dialogue_node" type="GraphNode"]
-margin_right = 220.0
-margin_bottom = 139.0
+margin_right = 213.0
+margin_bottom = 160.0
 custom_colors/title_color = Color( 0.317647, 0.588235, 0.254902, 1 )
 title = "DIALOGUE"
 slot/0/left_enabled = true
@@ -33,7 +33,7 @@ __meta__ = {
 [node name="HBoxContainer_0" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 24.0
-margin_right = 204.0
+margin_right = 197.0
 margin_bottom = 48.0
 
 [node name="id_name" type="Label" parent="HBoxContainer_0"]
@@ -64,11 +64,12 @@ margin_left = 123.0
 margin_right = 181.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 51.326, 16 )
+size_flags_horizontal = 3
 
 [node name="HBoxContainer_1" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 49.0
-margin_right = 204.0
+margin_right = 197.0
 margin_bottom = 63.0
 
 [node name="text_name" type="Label" parent="HBoxContainer_1"]
@@ -82,9 +83,11 @@ __meta__ = {
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_left = 16.0
 margin_top = 64.0
-margin_right = 204.0
-margin_bottom = 134.0
-rect_min_size = Vector2( 0, 70 )
+margin_right = 197.0
+margin_bottom = 149.805
+rect_min_size = Vector2( 0, 85.805 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 wrap_enabled = true
 [connection signal="mouse_entered" from="." to="." method="_on_happy_dialogue_node_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_happy_dialogue_node_mouse_exited"]
