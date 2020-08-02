@@ -186,6 +186,15 @@ func set_node_tag(var node : Happy_Story_Node):
 	window.window.set_global_position(node.get_global_rect().position)
 	refresh_inspector()
 
+func clear_node_tag(var node : Happy_Story_Node):
+	node.overlay = GraphNode.OVERLAY_DISABLED
+	node.title = Happy_Story.TYPE.keys()[node.type]
+	cur_teller.tags.erase(node.node_data.tag)
+	node.save_node()
+	cur_director.storys[node.id] = node.node_data
+	node.node_data.tag = ""
+	save_director()
+
 func copy_nodes(var nodes : Array):
 	for node in nodes:
 		var story : Happy_Story
@@ -298,6 +307,10 @@ func _on_graph_editor_popup_request(position):
 	if mouse_enter_node != null:
 		popup_node = mouse_enter_node
 		node_menu.set_global_position(position)
+		if popup_node.node_data.tag:
+			node_menu.set_item_disabled(1,false)
+		else:
+			node_menu.set_item_disabled(1,true)
 		node_menu.popup()
 	else:
 		create_menu.set_global_position(position)
@@ -310,6 +323,8 @@ func _on_node_menu_id_pressed(id):
 	match id:
 		0:
 			set_node_tag(popup_node)
+		1:
+			clear_node_tag(popup_node)
 			
 func _on_graph_editor_delete_nodes_request():
 	for node in selected_nodes:
