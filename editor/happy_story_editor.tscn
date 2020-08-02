@@ -92,7 +92,7 @@ margin_left = 288.0
 margin_top = 176.0
 margin_right = 447.0
 margin_bottom = 210.0
-items = [ "Set Root", null, 0, false, false, 0, 0, null, "", false ]
+items = [ "Set Tag", null, 0, false, false, 0, 0, null, "", false, "Clear Tag", null, 0, false, true, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
