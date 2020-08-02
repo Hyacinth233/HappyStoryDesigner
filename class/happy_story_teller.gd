@@ -4,10 +4,13 @@ extends Node
 class_name Happy_Story_Teller
 
 export(Resource) var director
+export(Resource) var variable_pool
 export(bool) var refresh_tags setget on_refresh_tags_pressed
 export(bool) var to_tag setget on_to_tag_pressed
 export(String) var tag
 export(Dictionary) var tags
+export(Dictionary) var local_vars
+export(Dictionary) var global_vars
 export(bool) var play setget on_play_pressed
 export(bool) var next setget on_next_pressed
 export(Array) var params = [-1]
@@ -29,12 +32,7 @@ func _process(delta):
 				last_director = director
 
 func on_refresh_tags_pressed(var btn):
-	if Engine.editor_hint:
-		if editor:
-			tags.clear()
-			for story in director.storys:
-				tags[director.storys[story].tag] = director.storys[story].id
-			editor.refresh_inspector()
+	refresh_tags()
 			
 func on_to_tag_pressed(var btn):
 	to_tag()
@@ -44,6 +42,17 @@ func on_play_pressed(var btn):
 	
 func on_next_pressed(var btn):
 	next(params)
+
+func refresh_tags():
+	if Engine.editor_hint:
+		if editor:
+			tags.clear()
+			for story in director.storys:
+				if director.storys[story].tag == "":
+					tags.erase(director.storys[story].tag)
+				else:
+					tags[director.storys[story].tag] = director.storys[story].id
+			editor.refresh_inspector()
 	
 func to_tag(var temp_tag = tag):
 	index = tags[temp_tag]

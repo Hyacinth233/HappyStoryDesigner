@@ -190,10 +190,11 @@ func clear_node_tag(var node : Happy_Story_Node):
 	node.overlay = GraphNode.OVERLAY_DISABLED
 	node.title = Happy_Story.TYPE.keys()[node.type]
 	cur_teller.tags.erase(node.node_data.tag)
+	node.node_data.tag = ""
 	node.save_node()
 	cur_director.storys[node.id] = node.node_data
-	node.node_data.tag = ""
 	save_director()
+	cur_teller.refresh_tags()
 
 func copy_nodes(var nodes : Array):
 	for node in nodes:
