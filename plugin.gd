@@ -5,7 +5,6 @@ var dock
 
 func _enter_tree():
 	add_custom_type("Happy_Story_Teller", "Node", preload("class/happy_story_teller.gd"), preload("icon.png"))
-#	add_custom_type("Happy_Billboard", "Node", preload("class/happy_billboard.gd"), preload("icon.png"))
 	add_autoload_singleton("Happy_Billboard", "res://addons/happy_story_designer/class/happy_billboard.gd")
 	dock = preload("editor/happy_story_editor.tscn").instance()
 	dock.the_plugin = self
