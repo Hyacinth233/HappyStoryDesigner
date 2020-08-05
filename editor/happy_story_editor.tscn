@@ -82,17 +82,28 @@ margin_left = 288.0
 margin_top = 176.0
 margin_right = 447.0
 margin_bottom = 210.0
-items = [ "Create Dialogue Node", null, 0, false, false, 0, 0, null, "", false, "Create Branch Node", null, 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="create_node_menu" type="PopupMenu" parent="create_menu"]
+margin_right = 20.0
+margin_bottom = 20.0
+items = [ "Dialogue", null, 0, false, false, 0, 0, null, "", false, "Branch", null, 0, false, false, 1, 0, null, "", false, "Conditions", null, 0, false, false, 2, 0, null, "", true, "Math Condition", null, 0, false, false, 3, 0, null, "", false, "Bool Condition", null, 0, false, false, 4, 0, null, "", false ]
+allow_search = true
+
+[node name="create_tool_menu" type="PopupMenu" parent="create_menu"]
+margin_right = 20.0
+margin_bottom = 20.0
+items = [ "Variable", null, 0, false, false, 0, 0, null, "", false, "Math", null, 0, false, false, 1, 0, null, "", true, "Add", null, 0, false, false, 2, 0, null, "", false, "Minus", null, 0, false, false, 3, 0, null, "", false, "Multiply", null, 0, false, false, 4, 0, null, "", false, "Divide", null, 0, false, false, 5, 0, null, "", false, "Switch", null, 0, false, false, 6, 0, null, "", false ]
+allow_search = true
 
 [node name="node_menu" type="PopupMenu" parent="."]
 margin_left = 288.0
 margin_top = 176.0
 margin_right = 447.0
 margin_bottom = 210.0
-items = [ "Set Tag", null, 0, false, false, 0, 0, null, "", false, "Clear Tag", null, 0, false, true, 1, 0, null, "", false ]
+items = [ "Set Tag", null, 0, false, false, 0, 0, null, "", false, "Clear Tag", null, 0, false, true, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Copy", null, 0, false, false, 3, 0, null, "", false, "Paste", null, 0, false, true, 4, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -104,4 +115,6 @@ __meta__ = {
 [connection signal="popup_request" from="graph_editor" to="." method="_on_graph_editor_popup_request"]
 [connection signal="scroll_offset_changed" from="graph_editor" to="." method="_on_graph_editor_scroll_offset_changed"]
 [connection signal="id_pressed" from="create_menu" to="." method="_on_create_menu_id_pressed"]
+[connection signal="id_pressed" from="create_menu/create_node_menu" to="." method="_on_create_node_menu_id_pressed"]
+[connection signal="id_pressed" from="create_menu/create_tool_menu" to="." method="_on_create_tool_menu_id_pressed"]
 [connection signal="id_pressed" from="node_menu" to="." method="_on_node_menu_id_pressed"]

@@ -33,7 +33,7 @@ func _on_ConfirmationDialog_confirmed():
 	node.node_data.tag = tag_edit.text
 	tags[tag_edit.text] = node.id
 	node.save_node()
-	node.overlay = GraphNode.OVERLAY_BREAKPOINT
+	#node.overlay = GraphNode.OVERLAY_BREAKPOINT
 	node.title = tag_edit.text + " : " + Happy_Story.TYPE.keys()[node.type]
 	editor.refresh_inspector()
 	

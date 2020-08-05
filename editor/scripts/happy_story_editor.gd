@@ -14,6 +14,7 @@ var mouse_enter_node : GraphNode = null
 var popup_node : GraphNode
 
 var graph_nodes : Dictionary
+var tool_nodes : Dictionary
 var copied_datas = [Happy_Story]
 var selected_nodes = [GraphNode]
 var selected_position = Vector2.ZERO
@@ -24,12 +25,15 @@ onready var node_size_label = $graph_editor/node_size
 onready var node_root_label = $graph_editor/node_root
 onready var warning_label_0 = $warning_label_0
 onready var warning_label_1 = $warning_label_1
-onready var create_menu = $create_menu
-onready var node_menu = $node_menu
+onready var create_menu : PopupMenu = $create_menu
+onready var create_node_menu : PopupMenu = $create_menu/create_node_menu
+onready var create_tool_menu : PopupMenu = $create_menu/create_tool_menu
+onready var node_menu : PopupMenu = $node_menu
 
 const happy_dialogue_node = preload("../happy_dialogue_node.tscn")
 const happy_branch_node = preload("../happy_branch_node.tscn")
 const set_tag_window = preload("../set_tag_window.tscn")
+const tool_variable_node = preload("../tool_nodes/tool_variable_node.tscn")
 
 var has_ready = false
 
@@ -39,7 +43,46 @@ func _ready():
 		var editor_interface : EditorInterface = the_plugin.get_editor_interface()
 		editor_selection = editor_interface.get_selection()
 		editor_selection.connect("selection_changed", self, "_on_editor_selection_changed")
+		set_menus()
+		
+func set_menus():
+	create_menu.clear()
+	create_menu.add_submenu_item("Create Node", "create_node_menu", 0)
+	create_menu.add_submenu_item("Create Tool", "create_tool_menu", 1)
+	create_menu.add_separator()
+	create_menu.add_item("Copy", 2)
+	create_menu.add_item("Paste", 3)
+	create_menu.set_item_disabled(create_menu.get_item_index(3), true)
+	create_menu.set_allow_search(true)
 	
+	create_node_menu.clear()
+	create_node_menu.add_item("Dialogue", 0)
+	create_node_menu.add_item("Branch", 1)
+	create_node_menu.add_separator("Conditions")
+	create_node_menu.add_item("Math Condition", 2)
+	create_node_menu.add_item("Bool Condition", 3)
+	create_node_menu.set_allow_search(true)
+	
+	create_tool_menu.clear()
+	create_tool_menu.add_item("Variable", 0)
+	create_tool_menu.add_separator("Math")
+	create_tool_menu.add_item("Add", 1)
+	create_tool_menu.add_item("Minus", 2)
+	create_tool_menu.add_item("Multiply", 3)
+	create_tool_menu.add_item("Divide", 4)
+	create_tool_menu.add_item("Switch", 5)
+	create_tool_menu.set_allow_search(true)
+	
+	node_menu.clear()
+	node_menu.add_item("Set Tag", 0)
+	node_menu.add_item("Clear Tag", 1)
+	node_menu.set_item_disabled(node_menu.get_item_index(1), true)
+	node_menu.add_separator()
+	node_menu.add_item("Copy", 2)
+	node_menu.add_item("Paste", 3)
+	node_menu.set_item_disabled(node_menu.get_item_index(3), true)
+	node_menu.set_allow_search(true)
+
 func clear_nodes():
 	node_ids = []
 	node_size = 0
@@ -107,7 +150,7 @@ func load_nodes_from_director(director : Happy_Director):
 		node.offset = director.coordinate[key]
 		graph_edit.add_child(node)
 		if node.node_data.tag:
-			node.overlay = GraphNode.OVERLAY_BREAKPOINT
+			#node.overlay = GraphNode.OVERLAY_BREAKPOINT
 			node.title = node.node_data.tag + " : " + Happy_Story.TYPE.keys()[node.type]
 		
 	refresh_inspector()
@@ -134,18 +177,21 @@ func load_nodes_from_director(director : Happy_Director):
 							else:
 								to_id = -1
 
-func create_node(var id):
+func create_node(var type):
 	var node : GraphNode
-	match id:
-		0:
+	match type:
+		Happy_Story.TYPE.DIALOGUE:
 			node = happy_dialogue_node.instance()
-		1:
+		Happy_Story.TYPE.BRANCH:
 			node = happy_branch_node.instance()
 	add_story_into_director(node)
 	graph_edit.add_child(node)
 	graph_nodes[node.id] = node
 	node.offset = create_menu.get_global_rect().position - graph_edit.get_global_rect().position + graph_edit.scroll_offset
 	refresh_inspector()
+	
+func create_tool(var type):
+	var node : GraphNode
 	
 func add_story_into_director(node):
 	node.editor = self
@@ -306,6 +352,7 @@ func _on_editor_selection_changed():
 
 func _on_graph_editor_popup_request(position):
 	if mouse_enter_node != null:
+		mouse_enter_node.set_selected(true)
 		popup_node = mouse_enter_node
 		node_menu.set_global_position(position)
 		if popup_node.node_data.tag:
@@ -318,7 +365,7 @@ func _on_graph_editor_popup_request(position):
 		create_menu.popup()
 
 func _on_create_menu_id_pressed(id):
-	create_node(id)
+	pass
 
 func _on_node_menu_id_pressed(id):
 	match id:
@@ -390,3 +437,15 @@ func _on_graph_editor_copy_nodes_request():
 
 func _on_graph_editor_paste_nodes_request():
 	paste_nodes(copied_datas)
+
+func _on_create_node_menu_id_pressed(id):
+	match id:
+		0:
+			create_node(Happy_Story.TYPE.DIALOGUE)
+		1:
+			create_node(Happy_Story.TYPE.BRANCH)
+		_:
+			print("ERROR: Node Type Not Found !")
+
+func _on_create_tool_menu_id_pressed(id):
+	pass

@@ -4,6 +4,9 @@ class_name Happy_Story
 enum TYPE{
 	DIALOGUE = 0,
 	BRANCH = 1,
+	MATH_CONDITION = 2,
+	BOOL_CONDITION = 3,
+	ASSIGN = 4,
 }
 
 export(TYPE) var type = TYPE.DIALOGUE
