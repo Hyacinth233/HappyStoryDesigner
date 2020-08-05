@@ -1,8 +1,6 @@
 tool
-extends GraphNode
-class_name Tool_Variable_Node
-
-var editor
+extends Happy_Tool_Node
+#class_name Tool_Variable_Node
 
 export(bool) var global = false
 export(String) var variable
@@ -30,6 +28,7 @@ func refresh_var_opt():
 	for key in var_dictionary:
 		var_opt.add_item(key)
 	variable = var_opt.get_item_text(0)
+	title = variable
 
 func save_node():
 	pass
@@ -41,4 +40,5 @@ func _on_global_btn_toggled(button_pressed):
 	
 func _on_var_opt_item_selected(index):
 	variable = var_opt.get_item_text(index)
+	title = variable
 	save_node()
