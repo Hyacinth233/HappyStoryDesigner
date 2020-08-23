@@ -317,14 +317,15 @@ func disconnect_to(from_node, from_slot, to_id):
 		var src_to_node = graph_nodes[to_id]
 		graph_edit.disconnect_node(from_node.name, from_slot, src_to_node.name, 0)
 		src_to_node.node_data.last_nodes.erase(from_node.id)
-		src_to_node.node_data.last_slots.erase(from_node.id)
+		src_to_node.node_data.last_slots[from_node.id].erase(from_slot)
 		
 func disconnect_from(node):
 	for id in node.node_data.last_nodes:
 		var from_node = graph_nodes[id]
 		print(from_node)
-		var from_slot = node.node_data.last_slots[id]
-		graph_edit.disconnect_node(from_node.name, from_slot, node.name, 0)
+		var from_slots = node.node_data.last_slots[id]
+		for slot in from_slots:
+			graph_edit.disconnect_node(from_node.name, slot, node.name, 0)
 		match from_node.type:
 			Happy_Story.TYPE.DIALOGUE:
 				from_node.node_data.to_id = -1
@@ -405,9 +406,15 @@ func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
 #				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
 			from_node.node_data.branches[from_slot] = to_node.id
 		#在此处添加新的类型
-		
-	to_node.node_data.last_nodes.append(from_node.id)
-	to_node.node_data.last_slots[from_node.id] = from_slot
+	
+	var slots : Array
+	if to_node.node_data.last_nodes.has(from_node.id):
+		slots = to_node.node_data.last_slots[from_node.id]
+	else:
+		to_node.node_data.last_nodes.append(from_node.id)
+	slots.append(from_slot)
+	to_node.node_data.last_slots[from_node.id] = slots
+	print(to_node.node_data.last_slots[from_node.id])
 	#print(to_node.node_data.last_nodes)
 	graph_edit.connect_node(from, from_slot, to, to_slot)
 
@@ -423,7 +430,7 @@ func _on_graph_editor_disconnection_request(from, from_slot, to, to_slot):
 		
 	var slot_index = to_node.node_data.last_nodes.bsearch(from_node.id)
 	to_node.node_data.last_nodes.erase(from_node.id)
-	to_node.node_data.last_slots.erase(from_node.id)
+	to_node.node_data.last_slots[from_node.id].erase(to_slot)
 	
 	save_director()
 	graph_edit.disconnect_node(from, from_slot, to, to_slot)
