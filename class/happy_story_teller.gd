@@ -104,4 +104,3 @@ func play_branch() -> Happy_Branch:
 func print_logs(var id, var text, var type = ""):
 	print("Happy Story Designer Log:")
 	print(type + "ID:" + String(index) + "  " + text)
-	pass

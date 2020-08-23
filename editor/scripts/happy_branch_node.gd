@@ -9,12 +9,12 @@ var node_data : Happy_Branch
 var branch_size = 0
 var branches : Array
 #export(Happy_Story.TYPE) var type
-export(Color) var slot_color_r : Color
 
 const branch_zero = preload("../branch.tscn")
 
 func _ready():
 	refresh_node()
+	set_slot(0, true, 0, slot_color_l, false, 0, slot_color_r, tex, tex)
 
 func _process(delta):
 	if not editor:
@@ -53,7 +53,7 @@ func create_branch(var selection : String = "", var branch : int = -1):
 	add_child(branch_node)
 	branch_node.node = self
 	branch_node.selection = selection
-	set_slot(branch_size + 1, false, 0, slot_color_r, true, 0, slot_color_r)
+	set_slot(branch_size + 1, false, 0, slot_color_l, true, 0, slot_color_r, tex, tex)
 
 func delete_branch(var branch_node):
 	branches.erase(branch_node)

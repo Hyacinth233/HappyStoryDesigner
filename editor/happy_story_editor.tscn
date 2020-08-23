@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_story_editor.gd" type="Script" id=1]
+[ext_resource path="res://addons/happy_story_designer/gizmo/icons/icon_replay.svg" type="Texture" id=2]
 
 [node name="happy_story_editor" type="Control"]
 anchor_right = 1.0
@@ -15,6 +16,7 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_icons/reset = ExtResource( 2 )
 right_disconnects = true
 __meta__ = {
 "_edit_use_anchors_": false
