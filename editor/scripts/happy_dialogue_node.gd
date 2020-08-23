@@ -11,7 +11,7 @@ var node_data : Happy_Dialogue
 
 func _ready():
 	refresh_node()
-
+	
 func _process(delta):
 	if not editor:
 		return
@@ -23,6 +23,11 @@ func _process(delta):
 	else:
 		if editor.selected_nodes.has(self):
 			editor.selected_nodes.erase(self)
+	
+	#设置背景颜色
+	godot_settings = editor.the_plugin.get_editor_interface().get_editor_settings()
+	bg_color = godot_settings.get_setting("interface/theme/base_color")
+	get_stylebox("frame").set_bg_color(bg_color)
 		
 func refresh_node():
 	if node_data:

@@ -10,6 +10,9 @@ func _enter_tree():
 	dock.the_plugin = self
 	add_control_to_bottom_panel(dock, "Happy Story Designer")
 
+func _process(delta):
+	if not dock.the_plugin:
+		dock.the_plugin = self
 
 func _exit_tree():
 	remove_custom_type("Happy_Story_Teller")
