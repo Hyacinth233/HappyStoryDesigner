@@ -32,6 +32,7 @@ onready var node_menu : PopupMenu = $node_menu
 
 const happy_dialogue_node = preload("../happy_dialogue_node.tscn")
 const happy_branch_node = preload("../happy_branch_node.tscn")
+const happy_assign_node = preload("../happy_assign_node.tscn")
 const set_tag_window = preload("../set_tag_window.tscn")
 const tool_variable_node = preload("../tool_nodes/tool_variable_node.tscn")
 
@@ -58,6 +59,7 @@ func set_menus():
 	create_node_menu.clear()
 	create_node_menu.add_item("Dialogue", 0)
 	create_node_menu.add_item("Branch", 1)
+	create_node_menu.add_item("Assign",4)
 	create_node_menu.add_separator("Conditions")
 	create_node_menu.add_item("Math Condition", 2)
 	create_node_menu.add_item("Bool Condition", 3)
@@ -136,6 +138,8 @@ func load_nodes_from_director(director : Happy_Director):
 				node = happy_dialogue_node.instance()
 			Happy_Story.TYPE.BRANCH:
 				node = happy_branch_node.instance()
+			Happy_Story.TYPE.ASSIGN:
+				node = happy_assign_node.instance()
 			#在此处添加新的类型
 			
 		node.editor = self
@@ -158,14 +162,6 @@ func load_nodes_from_director(director : Happy_Director):
 	
 	for key in graph_nodes:
 		match graph_nodes[key].type:
-			Happy_Story.TYPE.DIALOGUE:
-				var to_id = graph_nodes[key].node_data.to_id
-				if to_id != -1:
-					if graph_nodes[to_id]:
-						graph_edit.connect_node(graph_nodes[key].name, 0, graph_nodes[to_id].name, 0)
-						#print(String(key) + "~" + String(to_id))
-					else:
-						to_id = -1
 			Happy_Story.TYPE.BRANCH:
 				var branches = graph_nodes[key].node_data.branches
 				if branches.size() != 0:
@@ -176,6 +172,13 @@ func load_nodes_from_director(director : Happy_Director):
 								graph_edit.connect_node(graph_nodes[key].name, index, graph_nodes[to_id].name, 0)
 							else:
 								to_id = -1
+			_:
+				var to_id = graph_nodes[key].node_data.to_id
+				if to_id != -1:
+					if graph_nodes[to_id]:
+						graph_edit.connect_node(graph_nodes[key].name, 0, graph_nodes[to_id].name, 0)
+					else:
+						to_id = -1
 
 func create_node(var type):
 	var node : GraphNode
@@ -184,6 +187,9 @@ func create_node(var type):
 			node = happy_dialogue_node.instance()
 		Happy_Story.TYPE.BRANCH:
 			node = happy_branch_node.instance()
+		Happy_Story.TYPE.ASSIGN:
+			node = happy_assign_node.instance()
+			
 	add_story_into_director(node)
 	graph_edit.add_child(node)
 	graph_nodes[node.id] = node
@@ -206,6 +212,8 @@ func add_story_into_director(node):
 				node.node_data = Happy_Branch.new()
 				#node.node_data.selections.clear()
 				#node.node_data.branches.clear()
+			Happy_Story.TYPE.ASSIGN:
+				node.node_data = Happy_Assign.new()
 			#在此处添加新的类型
 			
 	cur_director.storys[id] = node.node_data
@@ -250,17 +258,31 @@ func copy_nodes(var nodes : Array):
 		#print("复制池："+String(copied_datas))
 
 func paste_nodes(var datas : Array):
+	var node
 	for data in datas:
-		var node = happy_dialogue_node.instance()
+		match data.type:
+			Happy_Story.TYPE.DIALOGUE:
+				node = happy_dialogue_node.instance()
+			Happy_Story.TYPE.BRANCH:
+				node = happy_branch_node.instance()
+			Happy_Story.TYPE.ASSIGN:
+				node = happy_assign_node.instance()
+		
 		node.editor = self
 		node.director = cur_director
 		var id = data.id
 		if node_ids.has(id):
 			id = create_new_id()
 		if not node.node_data:
-			node.node_data = Happy_Dialogue.new()
+			match data.type:
+				Happy_Story.TYPE.DIALOGUE:
+					node.node_data = Happy_Dialogue.new()
+				Happy_Story.TYPE.BRANCH:
+					node.node_data = Happy_Branch.new()
+				Happy_Story.TYPE.ASSIGN:
+					node.node_data = Happy_Assign.new()
+
 		node.node_data = data.clone()
-		print("test")
 		cur_director.storys[id] = node.node_data
 		cur_director.storys[id].id = id
 		#cur_director.coordinate[id] = node.offset
@@ -289,15 +311,15 @@ func delete_node(var node : Happy_Story_Node):
 	
 	var to_id
 	match node.type:
-		Happy_Story.TYPE.DIALOGUE:
-			to_id = node.node_data.to_id
-			disconnect_from(node)
-			disconnect_to(node, 0, to_id)
 		Happy_Story.TYPE.BRANCH:
 			disconnect_from(node)
 			for index in node.node_data.branches:
 				to_id = node.node_data.branches[index]
 				disconnect_to(node, index, to_id)
+		_:
+			to_id = node.node_data.to_id
+			disconnect_from(node)
+			disconnect_to(node, 0, to_id)
 	
 	if node.node_data.tag:
 		cur_teller.tags.erase(node.node_data.tag)
@@ -327,11 +349,11 @@ func disconnect_from(node):
 		for slot in from_slots:
 			graph_edit.disconnect_node(from_node.name, slot, node.name, 0)
 		match from_node.type:
-			Happy_Story.TYPE.DIALOGUE:
-				from_node.node_data.to_id = -1
 			Happy_Story.TYPE.BRANCH:
 				for index in from_node.node_data.branches:
 					from_node.node_data.branches[index] = -1
+			_:
+				from_node.node_data.to_id = -1
 		
 #----- signer -----
 
@@ -390,14 +412,6 @@ func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
 	var to_node = graph_edit.get_node(to)
 	var to_id
 	match from_node.type:
-		Happy_Story.TYPE.DIALOGUE:
-			to_id = from_node.node_data.to_id
-			disconnect_to(from_node, from_slot, to_id)
-#			if to_id != -1:
-#				var src_to_node = graph_nodes[from_node.node_data.to_id]
-#				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
-			from_node.node_data.to_id = to_node.id
-
 		Happy_Story.TYPE.BRANCH:
 			to_id = from_node.node_data.branches[from_slot]
 			disconnect_to(from_node, from_slot, to_id)
@@ -405,6 +419,13 @@ func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
 #				var src_to_node = graph_nodes[from_node.node_data.to_id]
 #				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
 			from_node.node_data.branches[from_slot] = to_node.id
+		_:
+			to_id = from_node.node_data.to_id
+			disconnect_to(from_node, from_slot, to_id)
+#			if to_id != -1:
+#				var src_to_node = graph_nodes[from_node.node_data.to_id]
+#				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
+			from_node.node_data.to_id = to_node.id
 		#在此处添加新的类型
 	
 	var slots : Array
@@ -422,10 +443,10 @@ func _on_graph_editor_disconnection_request(from, from_slot, to, to_slot):
 	var from_node = graph_edit.get_node(from)
 	var to_node = graph_edit.get_node(to)
 	match from_node.type:
-		Happy_Story.TYPE.DIALOGUE:
-			from_node.node_data.to_id = -1
 		Happy_Story.TYPE.BRANCH:
 			from_node.node_data.branches[from_slot] = -1
+		_:
+			from_node.node_data.to_id = -1
 		#在此处添加新的类型
 		
 	var slot_index = to_node.node_data.last_nodes.bsearch(from_node.id)
@@ -451,6 +472,8 @@ func _on_create_node_menu_id_pressed(id):
 			create_node(Happy_Story.TYPE.DIALOGUE)
 		1:
 			create_node(Happy_Story.TYPE.BRANCH)
+		4:
+			create_node(Happy_Story.TYPE.ASSIGN)
 		_:
 			print("ERROR: Node Type Not Found !")
 

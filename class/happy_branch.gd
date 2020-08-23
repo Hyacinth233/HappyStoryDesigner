@@ -10,7 +10,8 @@ func clone() -> Happy_Branch:
 	var new = get_script().new()
 	new.selections = selections.duplicate(true)
 	new.branches = branches.duplicate(true)
-	new.last_node = []
+	new.last_nodes = []
+	new.last_slots = {}
 	new.tag = tag
 	return new
 

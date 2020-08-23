@@ -27,7 +27,8 @@ func _process(delta):
 	else:
 		if editor.selected_nodes.has(self):
 			editor.selected_nodes.erase(self)
-
+	set_node_style()
+	
 func refresh_node():
 	if node_data:
 		id = node_data.id

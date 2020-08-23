@@ -1,37 +1,55 @@
-[gd_scene format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/happy_story_designer/style/node/happy_assign_node_selected.tres" type="StyleBox" id=1]
+[ext_resource path="res://addons/happy_story_designer/style/node/happy_assign_node.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_assign_node.gd" type="Script" id=3]
 
 [node name="tool_variable_node" type="GraphNode"]
 margin_right = 153.0
 margin_bottom = 123.0
-custom_colors/title_color = Color( 0.882353, 0.227451, 0.227451, 1 )
+custom_styles/frame = ExtResource( 2 )
+custom_styles/selectedframe = ExtResource( 1 )
+custom_colors/title_color = Color( 0, 0, 0, 1 )
+custom_constants/port_offset = 4
+custom_constants/title_offset = 12
 title = "ASSIGN"
 slot/0/left_enabled = true
-slot/0/left_type = 1
-slot/0/left_color = Color( 0.882353, 0.227451, 0.227451, 1 )
+slot/0/left_type = 0
+slot/0/left_color = Color( 0.227451, 0.360784, 0.882353, 1 )
 slot/0/right_enabled = true
-slot/0/right_type = 1
-slot/0/right_color = Color( 0.882353, 0.227451, 0.227451, 1 )
+slot/0/right_type = 0
+slot/0/right_color = Color( 0.584314, 0.670588, 1, 1 )
 slot/1/left_enabled = false
 slot/1/left_type = 0
 slot/1/left_color = Color( 1, 1, 1, 1 )
 slot/1/right_enabled = false
 slot/1/right_type = 0
 slot/1/right_color = Color( 0.968627, 0.4, 0.933333, 1 )
-slot/2/left_enabled = true
-slot/2/left_type = 0
-slot/2/left_color = Color( 0.968627, 0.4, 0.933333, 1 )
+slot/2/left_enabled = false
+slot/2/left_type = 1
+slot/2/left_color = Color( 1, 1, 1, 1 )
 slot/2/right_enabled = false
 slot/2/right_type = 0
 slot/2/right_color = Color( 1, 1, 1, 1 )
+slot/3/left_enabled = true
+slot/3/left_type = 1
+slot/3/left_color = Color( 1, 1, 1, 1 )
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color( 1, 1, 1, 1 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+type = 4
+slot_color_l = Color( 0.227451, 0.360784, 0.882353, 1 )
+slot_color_r = Color( 0.584314, 0.670588, 1, 1 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="."]
 margin_left = 16.0
-margin_top = 24.0
+margin_top = 23.0
 margin_right = 137.0
-margin_bottom = 48.0
+margin_bottom = 47.0
 
 [node name="id_name" type="Label" parent="HBoxContainer3"]
 margin_top = 5.0
@@ -48,9 +66,9 @@ editable = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 16.0
-margin_top = 49.0
+margin_top = 48.0
 margin_right = 137.0
-margin_bottom = 89.0
+margin_bottom = 88.0
 
 [node name="Label" type="Label" parent="HBoxContainer"]
 margin_top = 13.0
@@ -65,9 +83,9 @@ margin_bottom = 40.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 margin_left = 16.0
-margin_top = 90.0
+margin_top = 89.0
 margin_right = 137.0
-margin_bottom = 110.0
+margin_bottom = 109.0
 
 [node name="Label" type="Label" parent="HBoxContainer2"]
 margin_top = 3.0
@@ -80,5 +98,25 @@ margin_left = 55.0
 margin_right = 121.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 110.0
+margin_right = 137.0
+margin_bottom = 134.0
+
+[node name="Label" type="Label" parent="HBoxContainer4"]
+margin_top = 5.0
+margin_right = 35.0
+margin_bottom = 19.0
+text = "Value"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer4"]
+margin_left = 39.0
+margin_right = 97.0
+margin_bottom = 24.0
+[connection signal="mouse_entered" from="." to="." method="_on_tool_variable_node_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_tool_variable_node_mouse_exited"]
+[connection signal="offset_changed" from="." to="." method="_on_tool_variable_node_offset_changed"]
 [connection signal="toggled" from="HBoxContainer/global_btn" to="." method="_on_global_btn_toggled"]
 [connection signal="item_selected" from="HBoxContainer2/var_opt" to="." method="_on_var_opt_item_selected"]
