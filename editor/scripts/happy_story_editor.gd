@@ -162,6 +162,13 @@ func load_nodes_from_director(director : Happy_Director):
 	
 	for key in graph_nodes:
 		match graph_nodes[key].type:
+			Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+				var to_id = graph_nodes[key].node_data.to_id
+				if to_id != -1:
+					if graph_nodes[to_id]:
+						graph_edit.connect_node(graph_nodes[key].name, 0, graph_nodes[to_id].name, 0)
+					else:
+						to_id = -1
 			Happy_Story.TYPE.BRANCH:
 				var branches = graph_nodes[key].node_data.branches
 				if branches.size() != 0:
@@ -173,12 +180,8 @@ func load_nodes_from_director(director : Happy_Director):
 							else:
 								to_id = -1
 			_:
-				var to_id = graph_nodes[key].node_data.to_id
-				if to_id != -1:
-					if graph_nodes[to_id]:
-						graph_edit.connect_node(graph_nodes[key].name, 0, graph_nodes[to_id].name, 0)
-					else:
-						to_id = -1
+				print("ERROR: Unknown Node Type!")
+
 
 func create_node(var type):
 	var node : GraphNode
@@ -311,15 +314,17 @@ func delete_node(var node : Happy_Story_Node):
 	
 	var to_id
 	match node.type:
+		Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+			to_id = node.node_data.to_id
+			disconnect_from(node)
+			disconnect_to(node, 0, to_id)
 		Happy_Story.TYPE.BRANCH:
 			disconnect_from(node)
 			for index in node.node_data.branches:
 				to_id = node.node_data.branches[index]
 				disconnect_to(node, index, to_id)
 		_:
-			to_id = node.node_data.to_id
-			disconnect_from(node)
-			disconnect_to(node, 0, to_id)
+			print("ERROR: Unknown Node Type!")
 	
 	if node.node_data.tag:
 		cur_teller.tags.erase(node.node_data.tag)
@@ -349,11 +354,13 @@ func disconnect_from(node):
 		for slot in from_slots:
 			graph_edit.disconnect_node(from_node.name, slot, node.name, 0)
 		match from_node.type:
+			Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+				from_node.node_data.to_id = -1
 			Happy_Story.TYPE.BRANCH:
 				for index in from_node.node_data.branches:
 					from_node.node_data.branches[index] = -1
 			_:
-				from_node.node_data.to_id = -1
+				print("ERROR: Unknown Node Type!")
 		
 #----- signer -----
 
@@ -412,6 +419,13 @@ func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
 	var to_node = graph_edit.get_node(to)
 	var to_id
 	match from_node.type:
+		Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+			to_id = from_node.node_data.to_id
+			disconnect_to(from_node, from_slot, to_id)
+		#			if to_id != -1:
+		#				var src_to_node = graph_nodes[from_node.node_data.to_id]
+		#				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
+			from_node.node_data.to_id = to_node.id
 		Happy_Story.TYPE.BRANCH:
 			to_id = from_node.node_data.branches[from_slot]
 			disconnect_to(from_node, from_slot, to_id)
@@ -420,12 +434,7 @@ func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
 #				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
 			from_node.node_data.branches[from_slot] = to_node.id
 		_:
-			to_id = from_node.node_data.to_id
-			disconnect_to(from_node, from_slot, to_id)
-#			if to_id != -1:
-#				var src_to_node = graph_nodes[from_node.node_data.to_id]
-#				graph_edit.disconnect_node(from, from_slot, src_to_node.name, to_slot)
-			from_node.node_data.to_id = to_node.id
+			print("ERROR: Unknown Node Type!")
 		#在此处添加新的类型
 	
 	var slots : Array
@@ -443,10 +452,12 @@ func _on_graph_editor_disconnection_request(from, from_slot, to, to_slot):
 	var from_node = graph_edit.get_node(from)
 	var to_node = graph_edit.get_node(to)
 	match from_node.type:
+		Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+			from_node.node_data.to_id = -1
 		Happy_Story.TYPE.BRANCH:
 			from_node.node_data.branches[from_slot] = -1
 		_:
-			from_node.node_data.to_id = -1
+			print("ERROR: Unknown Node Type!")		
 		#在此处添加新的类型
 		
 	var slot_index = to_node.node_data.last_nodes.bsearch(from_node.id)
