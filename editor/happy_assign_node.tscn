@@ -4,7 +4,7 @@
 [ext_resource path="res://addons/happy_story_designer/style/node/happy_assign_node.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_assign_node.gd" type="Script" id=3]
 
-[node name="tool_variable_node" type="GraphNode"]
+[node name="happy_assign_node" type="GraphNode"]
 margin_right = 153.0
 margin_bottom = 123.0
 custom_styles/frame = ExtResource( 2 )
@@ -48,7 +48,7 @@ slot_color_r = Color( 0.584314, 0.670588, 1, 1 )
 [node name="HBoxContainer3" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 23.0
-margin_right = 137.0
+margin_right = 145.0
 margin_bottom = 47.0
 
 [node name="id_name" type="Label" parent="HBoxContainer3"]
@@ -67,7 +67,7 @@ editable = false
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 48.0
-margin_right = 137.0
+margin_right = 145.0
 margin_bottom = 88.0
 
 [node name="Label" type="Label" parent="HBoxContainer"]
@@ -80,43 +80,50 @@ text = "Global"
 margin_left = 45.0
 margin_right = 121.0
 margin_bottom = 40.0
+rect_min_size = Vector2( 0, 23 )
+flat = true
+align = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 89.0
-margin_right = 137.0
+margin_right = 145.0
 margin_bottom = 109.0
 
 [node name="Label" type="Label" parent="HBoxContainer2"]
 margin_top = 3.0
 margin_right = 51.0
 margin_bottom = 17.0
-text = "Varibale"
+text = "Variable"
 
 [node name="var_opt" type="OptionButton" parent="HBoxContainer2"]
 margin_left = 55.0
-margin_right = 121.0
+margin_right = 129.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
+text = "test0"
+items = [ "test0", null, false, 0, null, "test1", null, false, 1, null, "test2", null, false, 2, null ]
+selected = 0
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 110.0
-margin_right = 137.0
+margin_right = 145.0
 margin_bottom = 134.0
 
-[node name="Label" type="Label" parent="HBoxContainer4"]
+[node name="Label2" type="Label" parent="HBoxContainer4"]
 margin_top = 5.0
-margin_right = 35.0
+margin_right = 67.0
 margin_bottom = 19.0
-text = "Value"
+text = "New Value"
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer4"]
-margin_left = 39.0
-margin_right = 97.0
+[node name="new_value" type="LineEdit" parent="HBoxContainer4"]
+margin_left = 71.0
+margin_right = 129.0
 margin_bottom = 24.0
-[connection signal="mouse_entered" from="." to="." method="_on_tool_variable_node_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_tool_variable_node_mouse_exited"]
-[connection signal="offset_changed" from="." to="." method="_on_tool_variable_node_offset_changed"]
+[connection signal="mouse_entered" from="." to="." method="_on_happy_assign_node_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_happy_assign_node_mouse_exited"]
+[connection signal="offset_changed" from="." to="." method="_on_happy_assign_node_offset_changed"]
 [connection signal="toggled" from="HBoxContainer/global_btn" to="." method="_on_global_btn_toggled"]
 [connection signal="item_selected" from="HBoxContainer2/var_opt" to="." method="_on_var_opt_item_selected"]
+[connection signal="text_changed" from="HBoxContainer4/new_value" to="." method="_on_new_value_text_changed"]

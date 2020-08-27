@@ -34,6 +34,7 @@ const happy_dialogue_node = preload("../happy_dialogue_node.tscn")
 const happy_branch_node = preload("../happy_branch_node.tscn")
 const happy_assign_node = preload("../happy_assign_node.tscn")
 const set_tag_window = preload("../set_tag_window.tscn")
+const clear_all_node_window = preload("../clear_all_node_window.tscn")
 const tool_variable_node = preload("../tool_nodes/tool_variable_node.tscn")
 
 var has_ready = false
@@ -150,7 +151,7 @@ func load_nodes_from_director(director : Happy_Director):
 		node_size = node_ids.size()
 		graph_nodes[key] = node
 		node.node_coordinate = director.coordinate[key]
-#		print(node.node_coordinate)
+#		print(director.coordinate[key])
 		node.offset = director.coordinate[key]
 		graph_edit.add_child(node)
 		if node.node_data.tag:
@@ -332,6 +333,13 @@ func delete_node(var node : Happy_Story_Node):
 	save_director()
 	node.queue_free()
 	refresh_inspector()
+
+func clear_nodes_save():
+	clear_nodes()
+	cur_director.storys.clear()
+	cur_director.coordinate.clear()
+	save_director()
+	refresh_inspector()
 		
 func save_director():
 	if cur_director:
@@ -490,3 +498,11 @@ func _on_create_node_menu_id_pressed(id):
 
 func _on_create_tool_menu_id_pressed(id):
 	pass
+
+func _on_clear_pressed():
+	var window
+	window = clear_all_node_window.instance()
+	window.editor = self
+	graph_edit.add_child(window)
+	window.set_anchors_preset(Control.PRESET_CENTER)
+	window.set_margins_preset(Control.PRESET_CENTER)

@@ -3,14 +3,17 @@ extends Node
 
 class_name Happy_Story_Teller
 
+export(String) var story_name = "new_story"
 export(Resource) var director
 export(Resource) var variable_pool
-export(bool) var refresh_tags setget on_refresh_tags_pressed
-export(bool) var to_tag setget on_to_tag_pressed
-export(String) var tag
 export(Dictionary) var tags
 export(Dictionary) var local_vars
 export(Dictionary) var global_vars
+
+export(bool) var refresh setget on_refresh_pressed
+export(bool) var to_tag setget on_to_tag_pressed
+export(String) var tag
+
 export(bool) var play setget on_play_pressed
 export(bool) var next setget on_next_pressed
 export(Array) var params = [-1]
@@ -22,7 +25,8 @@ export(int) var index = 0
 var indexs : Dictionary
 
 func _ready():
-	pass
+	refresh_tags()
+	refresh_vars()
 	
 func _process(delta):
 	if Engine.editor_hint:
@@ -31,8 +35,9 @@ func _process(delta):
 				editor.set_current_teller(self)
 				last_director = director
 
-func on_refresh_tags_pressed(var btn):
+func on_refresh_pressed(var btn):
 	refresh_tags()
+	refresh_vars()
 			
 func on_to_tag_pressed(var btn):
 	to_tag()
@@ -53,6 +58,16 @@ func refresh_tags():
 				else:
 					tags[director.storys[story].tag] = director.storys[story].id
 			editor.refresh_inspector()
+
+func refresh_vars():
+	Happy_Billboard.local_values = local_vars
+	global_vars = variable_pool.global_values.duplicate()
+	Happy_Billboard.global_values = global_vars
+	print(Happy_Billboard.local_values)
+	print(Happy_Billboard.global_values)
+	if Engine.editor_hint:
+		if editor:
+			editor.refresh_inspector()
 	
 func to_tag(var temp_tag = tag):
 	index = tags[temp_tag]
@@ -66,6 +81,8 @@ func play():
 			return play_dialogue()
 		Happy_Story.TYPE.BRANCH:
 			return play_branch()
+		Happy_Story.TYPE.ASSIGN:
+			return play_assign()
 	print_logs(index, "EROOR: Unknown Type")
 	return 
 	
@@ -77,7 +94,7 @@ func next(var temp_params : Array):
 	if index == -1:
 		print_logs(index, "END!")
 	match director.storys[index].type:
-		Happy_Story.TYPE.DIALOGUE:			
+		Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
 			index = director.storys[index].to_id
 		Happy_Story.TYPE.BRANCH:
 			if !indexs.keys().has(temp_params[0]):
@@ -100,7 +117,21 @@ func play_branch() -> Happy_Branch:
 	print_logs(index, String(selections), "Load Branch : ")
 	indexs = director.storys[index].branches
 	return director.storys[index]
+
+func play_assign() -> Happy_Assign:
+	var is_global = director.storys[index].is_global
+	var new_value = director.storys[index].new_value
+	var variable = director.storys[index].variable
+	if is_global:
+		Happy_Billboard.global_values[variable] = new_value
+	else:
+		Happy_Billboard.local_values[variable] = new_value
+	return director.storys[index]
 	
 func print_logs(var id, var text, var type = ""):
 	print("Happy Story Designer Log:")
 	print(type + "ID:" + String(index) + "  " + text)
+
+func _on_Happy_Story_Teller_tree_exited():
+	if not Engine.editor_hint:
+		Happy_Billboard.all_local_values[story_name] = local_vars.duplicate()

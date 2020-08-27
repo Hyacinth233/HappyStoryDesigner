@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/happy_story_designer/editor/scripts/clear_all_node_window.gd" type="Script" id=1]
+
+[node name="clear_all_node_window" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -109.5
+margin_top = -59.5
+margin_right = 109.5
+margin_bottom = 59.5
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -109.5
+margin_top = -60.5
+margin_right = 109.5
+margin_bottom = 60.5
+window_title = "Warning"
+dialog_hide_on_ok = false
+dialog_autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="ConfirmationDialog"]
+anchor_right = 1.005
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -9.095
+margin_bottom = -36.0
+text = "Are you sure to clear all nodes?
+(UNRECOVERABLE )"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
