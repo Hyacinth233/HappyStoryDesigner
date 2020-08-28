@@ -16,7 +16,6 @@ func _process(delta):
 		if not editor.selected_nodes.has(self):
 			editor.selected_nodes.append(self)
 			editor.selected_position = offset
-		#	print(editor.selected_nodes)
 	else:
 		if editor.selected_nodes.has(self):
 			editor.selected_nodes.erase(self)

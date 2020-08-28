@@ -1,0 +1,111 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/happy_story_designer/player/scripts/happy_dialogue_player.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.207843, 0.207843, 0.207843, 0.811765 )
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color( 0, 0, 0, 0.0862745 )
+shadow_size = 2
+shadow_offset = Vector2( 5, 5 )
+anti_aliasing = false
+anti_aliasing_size = 5
+
+[node name="happy_dialogue_player" type="Panel"]
+anchor_right = 0.392
+anchor_bottom = 0.178
+margin_right = -0.0750122
+margin_bottom = -0.132996
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+speaker = "Kar:"
+text = "The history of all hitherto existing societies is the history of class struggles."
+speed = 18.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 13.0
+margin_top = 13.0
+margin_right = -13.0
+margin_bottom = -13.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="dialogue_bar" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 241.0
+margin_bottom = 21.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="speaker" type="Label" parent="VBoxContainer/dialogue_bar"]
+margin_right = 28.0
+margin_bottom = 21.0
+size_flags_vertical = 1
+custom_colors/font_color = Color( 1, 0.968627, 0.223529, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "Kar: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="dialogue" type="RichTextLabel" parent="VBoxContainer/dialogue_bar"]
+margin_left = 33.0
+margin_right = 241.0
+margin_bottom = 21.0
+size_flags_horizontal = 3
+text = "The history of all hitherto existing societies is the history of class struggles."
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="button_bar" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 25.0
+margin_right = 241.0
+margin_bottom = 45.0
+size_flags_vertical = 9
+
+[node name="replay_btn" type="Button" parent="VBoxContainer/button_bar"]
+margin_right = 54.0
+margin_bottom = 20.0
+custom_colors/font_color_hover = Color( 0.584314, 0.670588, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.227451, 0.360784, 0.882353, 1 )
+text = "Replay"
+flat = true
+
+[node name="next_btn" type="Button" parent="VBoxContainer/button_bar"]
+margin_left = 199.0
+margin_right = 241.0
+margin_bottom = 20.0
+size_flags_horizontal = 10
+custom_colors/font_color_hover = Color( 0.584314, 0.670588, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.227451, 0.360784, 0.882353, 1 )
+text = "Next"
+flat = true
+
+[node name="skip_btn" type="Button" parent="VBoxContainer/button_bar"]
+visible = false
+margin_left = 337.0
+margin_right = 375.0
+margin_bottom = 20.0
+size_flags_horizontal = 10
+custom_colors/font_color_hover = Color( 0.584314, 0.670588, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.227451, 0.360784, 0.882353, 1 )
+text = "Skip"
+flat = true
+[connection signal="pressed" from="VBoxContainer/button_bar/replay_btn" to="." method="_on_replay_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/button_bar/next_btn" to="." method="_on_next_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/button_bar/skip_btn" to="." method="_on_skip_btn_pressed"]
