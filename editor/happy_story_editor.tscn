@@ -15,6 +15,7 @@ __meta__ = {
 }
 
 [node name="graph_editor" type="GraphEdit" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_icons/reset = ExtResource( 2 )
@@ -40,6 +41,19 @@ margin_left = -766.088
 margin_top = 16.4816
 margin_bottom = 30.4816
 text = "Story Node Size : 0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="node_root" type="Label" parent="graph_editor"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -766.088
+margin_top = 32.7924
+margin_bottom = 46.7924
+text = "Root : 0"
 align = 2
 __meta__ = {
 "_edit_use_anchors_": false

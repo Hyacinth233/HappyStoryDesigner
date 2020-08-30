@@ -72,7 +72,8 @@ func refresh_vars():
 			editor.refresh_inspector()
 	
 func to_tag(var temp_tag = tag):
-	index = tags[temp_tag]
+	if tags.has(temp_tag):
+		index = tags[temp_tag]
 	
 func play():
 	if not director.storys.has(index):
