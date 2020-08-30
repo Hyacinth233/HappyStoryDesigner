@@ -1,8 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/happy_story_designer/editor/scripts/happy_story_editor.gd" type="Script" id=1]
-[ext_resource path="res://addons/happy_story_designer/gizmo/icons/icon_replay.svg" type="Texture" id=2]
-[ext_resource path="res://addons/happy_story_designer/gizmo/icons/icon_close.svg" type="Texture" id=3]
 [ext_resource path="res://addons/happy_story_designer/icon.png" type="Texture" id=4]
 
 [node name="happy_story_editor" type="Control"]
@@ -18,7 +16,6 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_icons/reset = ExtResource( 2 )
 right_disconnects = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -91,9 +88,9 @@ __meta__ = {
 
 [node name="clear" type="ToolButton" parent="graph_editor/HBoxContainer"]
 margin_left = 67.0
-margin_right = 95.0
+margin_right = 87.0
 margin_bottom = 53.0
-icon = ExtResource( 3 )
+text = "X"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -137,12 +134,6 @@ margin_bottom = 20.0
 items = [ "Dialogue", null, 0, false, false, 0, 0, null, "", false, "Branch", null, 0, false, false, 1, 0, null, "", false, "Conditions", null, 0, false, false, 2, 0, null, "", true, "Math Condition", null, 0, false, false, 3, 0, null, "", false, "Bool Condition", null, 0, false, false, 4, 0, null, "", false ]
 allow_search = true
 
-[node name="create_tool_menu" type="PopupMenu" parent="create_menu"]
-margin_right = 20.0
-margin_bottom = 20.0
-items = [ "Variable", null, 0, false, false, 0, 0, null, "", false, "Math", null, 0, false, false, 1, 0, null, "", true, "Add", null, 0, false, false, 2, 0, null, "", false, "Minus", null, 0, false, false, 3, 0, null, "", false, "Multiply", null, 0, false, false, 4, 0, null, "", false, "Divide", null, 0, false, false, 5, 0, null, "", false, "Switch", null, 0, false, false, 6, 0, null, "", false ]
-allow_search = true
-
 [node name="node_menu" type="PopupMenu" parent="."]
 margin_left = 288.0
 margin_top = 176.0
@@ -162,5 +153,4 @@ __meta__ = {
 [connection signal="pressed" from="graph_editor/HBoxContainer/clear" to="." method="_on_clear_pressed"]
 [connection signal="id_pressed" from="create_menu" to="." method="_on_create_menu_id_pressed"]
 [connection signal="id_pressed" from="create_menu/create_node_menu" to="." method="_on_create_node_menu_id_pressed"]
-[connection signal="id_pressed" from="create_menu/create_tool_menu" to="." method="_on_create_tool_menu_id_pressed"]
 [connection signal="id_pressed" from="node_menu" to="." method="_on_node_menu_id_pressed"]

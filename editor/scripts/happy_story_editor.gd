@@ -27,15 +27,12 @@ onready var warning_label_0 = $warning_label_0
 onready var warning_label_1 = $warning_label_1
 onready var create_menu : PopupMenu = $create_menu
 onready var create_node_menu : PopupMenu = $create_menu/create_node_menu
-onready var create_tool_menu : PopupMenu = $create_menu/create_tool_menu
 onready var node_menu : PopupMenu = $node_menu
 
 const happy_dialogue_node = preload("../happy_dialogue_node.tscn")
 const happy_branch_node = preload("../happy_branch_node.tscn")
-const happy_assign_node = preload("../happy_assign_node.tscn")
 const set_tag_window = preload("../set_tag_window.tscn")
 const clear_all_node_window = preload("../clear_all_node_window.tscn")
-const tool_variable_node = preload("../tool_nodes/tool_variable_node.tscn")
 
 var has_ready = false
 
@@ -50,7 +47,6 @@ func _ready():
 func set_menus():
 	create_menu.clear()
 	create_menu.add_submenu_item("Create Node", "create_node_menu", 0)
-	create_menu.add_submenu_item("Create Tool", "create_tool_menu", 1)
 	create_menu.add_separator()
 	create_menu.add_item("Copy", 2)
 	create_menu.add_item("Paste", 3)
@@ -60,21 +56,7 @@ func set_menus():
 	create_node_menu.clear()
 	create_node_menu.add_item("Dialogue", 0)
 	create_node_menu.add_item("Branch", 1)
-	create_node_menu.add_item("Assign",4)
-	create_node_menu.add_separator("Conditions")
-	create_node_menu.add_item("Math Condition", 2)
-	create_node_menu.add_item("Bool Condition", 3)
 	create_node_menu.set_allow_search(true)
-	
-	create_tool_menu.clear()
-	create_tool_menu.add_item("Variable", 0)
-	create_tool_menu.add_separator("Math")
-	create_tool_menu.add_item("Add", 1)
-	create_tool_menu.add_item("Minus", 2)
-	create_tool_menu.add_item("Multiply", 3)
-	create_tool_menu.add_item("Divide", 4)
-	create_tool_menu.add_item("Switch", 5)
-	create_tool_menu.set_allow_search(true)
 	
 	node_menu.clear()
 	node_menu.add_item("Set Tag", 0)
@@ -139,8 +121,6 @@ func load_nodes_from_director(director : Happy_Director):
 				node = happy_dialogue_node.instance()
 			Happy_Story.TYPE.BRANCH:
 				node = happy_branch_node.instance()
-			Happy_Story.TYPE.ASSIGN:
-				node = happy_assign_node.instance()
 			#在此处添加新的类型
 			
 		node.editor = self
@@ -163,7 +143,7 @@ func load_nodes_from_director(director : Happy_Director):
 	
 	for key in graph_nodes:
 		match graph_nodes[key].type:
-			Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+			Happy_Story.TYPE.DIALOGUE:
 				var to_id = graph_nodes[key].node_data.to_id
 				if to_id != -1:
 					if graph_nodes[to_id]:
@@ -191,8 +171,6 @@ func create_node(var type):
 			node = happy_dialogue_node.instance()
 		Happy_Story.TYPE.BRANCH:
 			node = happy_branch_node.instance()
-		Happy_Story.TYPE.ASSIGN:
-			node = happy_assign_node.instance()
 			
 	add_story_into_director(node)
 	graph_edit.add_child(node)
@@ -216,8 +194,6 @@ func add_story_into_director(node):
 				node.node_data = Happy_Branch.new()
 				#node.node_data.selections.clear()
 				#node.node_data.branches.clear()
-			Happy_Story.TYPE.ASSIGN:
-				node.node_data = Happy_Assign.new()
 			#在此处添加新的类型
 			
 	cur_director.storys[id] = node.node_data
@@ -269,8 +245,6 @@ func paste_nodes(var datas : Array):
 				node = happy_dialogue_node.instance()
 			Happy_Story.TYPE.BRANCH:
 				node = happy_branch_node.instance()
-			Happy_Story.TYPE.ASSIGN:
-				node = happy_assign_node.instance()
 		
 		node.editor = self
 		node.director = cur_director
@@ -283,8 +257,6 @@ func paste_nodes(var datas : Array):
 					node.node_data = Happy_Dialogue.new()
 				Happy_Story.TYPE.BRANCH:
 					node.node_data = Happy_Branch.new()
-				Happy_Story.TYPE.ASSIGN:
-					node.node_data = Happy_Assign.new()
 
 		node.node_data = data.clone()
 		cur_director.storys[id] = node.node_data
@@ -315,7 +287,7 @@ func delete_node(var node : Happy_Story_Node):
 	
 	var to_id
 	match node.type:
-		Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+		Happy_Story.TYPE.DIALOGUE:
 			to_id = node.node_data.to_id
 			disconnect_from(node)
 			disconnect_to(node, 0, to_id)
@@ -362,7 +334,7 @@ func disconnect_from(node):
 		for slot in from_slots:
 			graph_edit.disconnect_node(from_node.name, slot, node.name, 0)
 		match from_node.type:
-			Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+			Happy_Story.TYPE.DIALOGUE:
 				from_node.node_data.to_id = -1
 			Happy_Story.TYPE.BRANCH:
 				for index in from_node.node_data.branches:
@@ -427,7 +399,7 @@ func _on_graph_editor_connection_request(from, from_slot, to, to_slot):
 	var to_node = graph_edit.get_node(to)
 	var to_id
 	match from_node.type:
-		Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+		Happy_Story.TYPE.DIALOGUE:
 			to_id = from_node.node_data.to_id
 			disconnect_to(from_node, from_slot, to_id)
 		#			if to_id != -1:
@@ -460,7 +432,7 @@ func _on_graph_editor_disconnection_request(from, from_slot, to, to_slot):
 	var from_node = graph_edit.get_node(from)
 	var to_node = graph_edit.get_node(to)
 	match from_node.type:
-		Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
+		Happy_Story.TYPE.DIALOGUE:
 			from_node.node_data.to_id = -1
 		Happy_Story.TYPE.BRANCH:
 			from_node.node_data.branches[from_slot] = -1
@@ -491,8 +463,6 @@ func _on_create_node_menu_id_pressed(id):
 			create_node(Happy_Story.TYPE.DIALOGUE)
 		1:
 			create_node(Happy_Story.TYPE.BRANCH)
-		4:
-			create_node(Happy_Story.TYPE.ASSIGN)
 		_:
 			print("ERROR: Node Type Not Found !")
 
