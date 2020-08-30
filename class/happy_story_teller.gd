@@ -26,6 +26,8 @@ var indexs : Dictionary
 
 func _ready():
 	refresh_tags()
+	if tag:
+		to_tag()
 	refresh_vars()
 	
 func _process(delta):
@@ -75,7 +77,7 @@ func to_tag(var temp_tag = tag):
 func play():
 	if not director.storys.has(index):
 		print_logs(index, "EROOR: Invalid get index!")
-		return
+		return null
 	match director.storys[index].type:
 		Happy_Story.TYPE.DIALOGUE:			
 			return play_dialogue()
@@ -90,21 +92,26 @@ func play_with_index(var _index : int):
 	index = _index
 	return play()
 	
-func next(var temp_params : Array):
+func next(var temp_params : Array = [0]):
 	if index == -1:
 		print_logs(index, "END!")
+		return null
+	if not director.storys.has(index):
+		return null
 	match director.storys[index].type:
 		Happy_Story.TYPE.DIALOGUE, Happy_Story.TYPE.ASSIGN:
 			index = director.storys[index].to_id
 		Happy_Story.TYPE.BRANCH:
 			if !indexs.keys().has(temp_params[0]):
-				return "ERROR: Can't Find Branch With Index " + String(temp_params[0]) 
+				return null
 			index = indexs[temp_params[0]]
 		_:
 			index = -1
-			return "ERROR: Unknown Type"
+			return null
 	if index == -1:
 		print_logs(index, "END!")
+		return null
+	return director.storys[index].type
 	
 func play_dialogue() -> Happy_Dialogue:
 	var speaker = director.storys[index].speaker
