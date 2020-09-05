@@ -63,10 +63,11 @@ func refresh_tags():
 
 func refresh_vars():
 	Happy_Billboard.local_values = local_vars
-	global_vars = variable_pool.global_values.duplicate()
-	Happy_Billboard.global_values = global_vars
-	print(Happy_Billboard.local_values)
-	print(Happy_Billboard.global_values)
+	if variable_pool:
+		global_vars = variable_pool.global_values.duplicate()
+		Happy_Billboard.global_values = global_vars
+	else:
+		print("HSD: Warning: Variable Pool Not Found!")
 	if Engine.editor_hint:
 		if editor:
 			editor.refresh_inspector()
